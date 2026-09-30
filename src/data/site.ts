@@ -19,11 +19,11 @@ export const footerLinks = [
 ];
 
 export const contactInfo = {
-  address: "Sacré-Cœur 3, Dakar, Sénégal",
+  address: "Hann Mariste 2 , Dakar, Sénégal",
   city: "Dakar, Sénégal",
-  phone: "+221 77 000 00 00",
-  whatsappNumber: "221770000000", // format international sans le +, pour le lien wa.me
-  email: "contact@losleones-mma.sn",
+  phone: "+221 77 261 80 91",
+  whatsappNumber: "221772618091", // format international sans le +, pour le lien wa.me
+  email: "senegalsport@gmail.com",
 };
 
 export const socialLinks = [

@@ -1,10 +1,17 @@
-export default function Page() {
+import Hero from "@/components/home/hero";
+import IntroSection from "@/components/home/IntroSection";
+import ValuesSection from "@/components/home/ValuesSection";
+import FightersPreview from "@/components/home/FightersPreview";
+import CTASection from "@/components/home/CTASection";
+
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-900">
-      <h1 className="text-4xl font-bold text-amber-500 animate-bounce">
-        🦁 Los Leones MMA — Ça fonctionne !
-        </h1>
-    </div>
+    <main>
+      <Hero />
+      <IntroSection />
+      <ValuesSection />
+      <FightersPreview />
+      <CTASection />
+    </main>
   );
 }
-  
