@@ -1,5 +1,6 @@
-import { ApplicationFormData } from "@/components/types/application";
+import type { ApplicationFormData } from "@/components/types/application";
 import FormField from "@/components/candidater/FormField";
+import { birthDateError, emailError, phoneError } from "@/lib/validation";
 
 type Props = {
   data: ApplicationFormData;
@@ -8,58 +9,61 @@ type Props = {
 };
 
 export default function StepInformations({ data, update, onNext }: Props) {
+  const dateErr = birthDateError(data.dateNaissance);
+  const phoneErr = phoneError(data.telephone);
+  const mailErr = emailError(data.email);
+
+  // "Validation avant d'avancer" : le bouton reste bloqué tant qu'une règle n'est pas respectée
   const isValid =
-    data.prenom && data.nom && data.dateNaissance && data.telephone && data.ville;
+    Boolean(
+      data.prenom.trim() &&
+        data.nom.trim() &&
+        data.dateNaissance &&
+        data.telephone.trim() &&
+        data.ville.trim()
+    ) &&
+    !dateErr &&
+    !phoneErr &&
+    !mailErr;
+
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <div>
       <h2 className="text-2xl font-extrabold text-white">01 — INFORMATIONS</h2>
 
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <FormField
-          label="Prénom"
-          required
-          value={data.prenom}
-          onChange={(v) => update({ prenom: v })}
-        />
-        <FormField
-          label="Nom"
-          required
-          value={data.nom}
-          onChange={(v) => update({ nom: v })}
-        />
+        <FormField label="Prénom" required value={data.prenom} onChange={(v) => update({ prenom: v })} />
+        <FormField label="Nom" required value={data.nom} onChange={(v) => update({ nom: v })} />
         <FormField
           label="Date de naissance"
           type="date"
           required
+          max={today}
           value={data.dateNaissance}
           onChange={(v) => update({ dateNaissance: v })}
+          error={dateErr}
         />
         <FormField
           label="Téléphone"
           type="tel"
+          inputMode="tel"
           required
-          placeholder="+221 77 000 00 00"
+          placeholder="77 123 45 67"
           value={data.telephone}
           onChange={(v) => update({ telephone: v })}
+          error={phoneErr}
         />
         <FormField
-          label="Email"
+          label="Email (optionnel)"
           type="email"
+          inputMode="email"
           value={data.email}
           onChange={(v) => update({ email: v })}
+          error={mailErr}
         />
-        <FormField
-          label="Ville"
-          required
-          value={data.ville}
-          onChange={(v) => update({ ville: v })}
-        />
-        <FormField
-          label="Quartier (optionnel)"
-          value={data.quartier}
-          onChange={(v) => update({ quartier: v })}
-        />
+        <FormField label="Ville" required value={data.ville} onChange={(v) => update({ ville: v })} />
+        <FormField label="Quartier (optionnel)" value={data.quartier} onChange={(v) => update({ quartier: v })} />
       </div>
 
       <div className="mt-10 flex justify-end border-t border-white/10 pt-6">

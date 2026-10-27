@@ -1,8 +1,13 @@
-import { mockFighters } from "@/components/data/mock-fighters";
+import { getFighters } from "@/lib/public-api";
 import FighterCard from "@/components/fighters/FighterCard";
 import Button from "@/components/ui/Button";
 
-export default function FightersPreview() {
+export default async function FightersPreview() {
+  const fighters = (await getFighters()).slice(0, 4);
+
+  // Pas de section vide sur l'accueil tant qu'il n'y a aucun fighter
+  if (fighters.length === 0) return null;
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -20,7 +25,7 @@ export default function FightersPreview() {
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {mockFighters.map((fighter) => (
+        {fighters.map((fighter) => (
           <FighterCard key={fighter.id} fighter={fighter} />
         ))}
       </div>

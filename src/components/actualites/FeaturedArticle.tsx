@@ -7,8 +7,16 @@ export default function FeaturedArticle({ article }: { article: Article }) {
       href={`/actualites/${article.slug}`}
       className="group grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center"
     >
-      <div className="aspect-[4/3] w-full overflow-hidden rounded-md bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)] transition duration-300 group-hover:opacity-90 lg:aspect-[16/11]" />
-
+      <div className="aspect-[4/3] w-full overflow-hidden rounded-md bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)] transition duration-300 group-hover:opacity-90 lg:aspect-[16/11]">
+        {article.photos[0] && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={article.photos[0]}
+            alt={article.title}
+            className="h-full w-full object-cover"
+          />
+        )}
+      </div>
       <div>
         <p className="text-xs font-bold tracking-widest text-orange-500">
           {article.category.toUpperCase()} — {article.date}

@@ -1,15 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Menu } from "lucide-react";
-import { navLinks } from "@/data/site";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import MobileMenu from "@/components/layout/MobileMenu";
 import Image from "next/image";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const t = useTranslations("Header");
+  const navLinks = [
+    { href: "/", label: t("nav.home") },
+    { href: "/club", label: t("nav.club") },
+    { href: "/fighters", label: t("nav.fighters") },
+    { href: "/agent", label: t("nav.agent") },
+    { href: "/partenaires", label: t("nav.partners") },
+    { href: "/actualites", label: t("nav.news") },
+  ];
 
   return (
     <>
@@ -19,20 +28,19 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/logo/logo2.png"
-              alt="Los Leones MMA Club Senegal"
+              alt={t("logoAlt")}
               width={100}
               height={100}
               priority
             />
             <div className="leading-tight">
-              
               <p className="hidden text-[10px] tracking-widest text-neutral-400 sm:block">
-                MMA CLUB SENEGAL
+                {t("clubTagline")}
               </p>
             </div>
           </Link>
 
-          {/* Nav desktop */}
+          {/* Navigation desktop */}
           <nav className="hidden items-center gap-8 lg:flex">
             {navLinks.map((link) => (
               <Link
@@ -48,17 +56,19 @@ export default function Header() {
           {/* Actions desktop */}
           <div className="hidden items-center gap-4 lg:flex">
             <WhatsAppButton variant="outline" />
+
             <Link
               href="/contact"
               className="text-xs font-semibold tracking-widest text-neutral-300 transition hover:text-white"
             >
-              CONTACT
+              {t("contact")}
             </Link>
+
             <Link
               href="/candidater"
               className="rounded-md bg-orange-500 px-4 py-2 text-xs font-bold tracking-wide text-black transition hover:bg-orange-400"
             >
-              REJOINDRE LOS LEONES
+              {t("join")}
             </Link>
           </div>
 
@@ -68,11 +78,13 @@ export default function Header() {
               href="/candidater"
               className="rounded-md bg-orange-500 px-3 py-2 text-xs font-bold tracking-wide text-black"
             >
-              REJOINDRE
+              {t("joinMobile")}
             </Link>
+
             <button
+              type="button"
               onClick={() => setMenuOpen(true)}
-              aria-label="Ouvrir le menu"
+              aria-label={t("openMenu")}
               className="text-white"
             >
               <Menu size={26} />

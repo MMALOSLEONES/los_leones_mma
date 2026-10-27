@@ -1,12 +1,3 @@
-export type ObjectifCandidature =
-  | "Apprendre le MMA"
-  | "Améliorer ma condition physique"
-  | "Faire de la compétition"
-  | "Devenir professionnel"
-  | "Préparer un combat"
-  | "Développer mes compétences"
-  | "Autre";
-
 export type SourceConnaissance =
   | "Instagram"
   | "TikTok"
@@ -28,8 +19,6 @@ export interface ApplicationFormData {
 
   // Étape 2 — Profil sportif
   aExperienceCombat: boolean | null;
-  discipline: string;
-  anneesPratique: string;
   niveau: string;
   aFaitCompetitions: boolean | null;
   nombreCombats: string;
@@ -39,11 +28,9 @@ export interface ApplicationFormData {
   kos: string;
   soumissions: string;
 
-  // Étape 3 — Motivation
-  motivation: string;
-  objectifs: ObjectifCandidature[];
+  // Étape 3 — Photo
   commentConnu: SourceConnaissance | "";
-  photoFileName: string;
+  photo: File | null;
 
   // Étape 4 — Vérification
   consentAccepted: boolean;
@@ -58,8 +45,6 @@ export const initialApplicationData: ApplicationFormData = {
   ville: "",
   quartier: "",
   aExperienceCombat: null,
-  discipline: "",
-  anneesPratique: "",
   niveau: "",
   aFaitCompetitions: null,
   nombreCombats: "",
@@ -68,9 +53,7 @@ export const initialApplicationData: ApplicationFormData = {
   nuls: "",
   kos: "",
   soumissions: "",
-  motivation: "",
-  objectifs: [],
   commentConnu: "",
-  photoFileName: "",
+  photo: null,
   consentAccepted: false,
 };

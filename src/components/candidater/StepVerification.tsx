@@ -1,4 +1,4 @@
-import { ApplicationFormData } from "@/components/types/application";
+import type { ApplicationFormData } from "@/components/types/application";
 
 type Props = {
   data: ApplicationFormData;
@@ -11,36 +11,28 @@ type Props = {
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between border-b border-white/5 py-3">
-      <span className="text-xs font-semibold tracking-widest text-neutral-500">
-        {label}
-      </span>
-      <span className="text-sm text-white">{value || "—"}</span>
+    <div className="flex items-start justify-between gap-4 border-b border-white/5 py-3">
+      <span className="text-xs font-semibold tracking-widest text-neutral-500">{label}</span>
+      <span className="text-right text-sm text-white">{value || "—"}</span>
     </div>
   );
 }
 
-function SectionHeader({
-  title,
-  onModify,
-}: {
-  title: string;
-  onModify: () => void;
-}) {
+function SectionHeader({ title, onModify }: { title: string; onModify: () => void }) {
   return (
     <div className="mt-8 flex items-center justify-between">
-      <h3 className="text-xs font-bold tracking-widest text-orange-500">
-        {title}
-      </h3>
-      <button
-        type="button"
-        onClick={onModify}
-        className="text-xs font-semibold text-neutral-400 hover:text-white"
-      >
+      <h3 className="text-xs font-bold tracking-widest text-orange-500">{title}</h3>
+      <button type="button" onClick={onModify} className="text-xs font-semibold text-neutral-400 hover:text-white">
         MODIFIER
       </button>
     </div>
   );
+}
+
+function competitionsText(d: ApplicationFormData) {
+  if (d.aExperienceCombat !== true) return "—";
+  if (d.aFaitCompetitions !== true) return "Aucune";
+  return `${d.nombreCombats} combat(s) · ${d.victoires || 0}V / ${d.defaites || 0}D / ${d.nuls || 0}N · ${d.kos || 0} KO · ${d.soumissions || 0} soum.`;
 }
 
 export default function StepVerification({
@@ -51,6 +43,9 @@ export default function StepVerification({
   onSubmit,
   submitting = false,
 }: Props) {
+  // 2000-01-31 → 31/01/2000 (sans passer par Date, pour éviter les décalages de fuseau)
+  const birth = data.dateNaissance.split("-").reverse().join("/");
+
   return (
     <div>
       <h2 className="text-2xl font-extrabold text-white">04 — VÉRIFICATION</h2>
@@ -59,28 +54,27 @@ export default function StepVerification({
       </p>
 
       <SectionHeader title="INFORMATIONS" onModify={() => onGoToStep(1)} />
-      <SummaryRow label="Nom complet" value={`${data.prenom} ${data.nom}`} />
-      <SummaryRow label="Date de naissance" value={data.dateNaissance} />
-      <SummaryRow label="Téléphone" value={data.telephone} />
-      <SummaryRow label="Email" value={data.email} />
-      <SummaryRow label="Ville" value={data.ville} />
+      <SummaryRow label="NOM COMPLET" value={`${data.prenom} ${data.nom}`} />
+      <SummaryRow label="NAISSANCE" value={birth} />
+      <SummaryRow label="TÉLÉPHONE" value={data.telephone} />
+      <SummaryRow label="EMAIL" value={data.email} />
+      <SummaryRow
+        label="VILLE"
+        value={[data.ville, data.quartier].filter(Boolean).join(" — ")}
+      />
 
       <SectionHeader title="PROFIL SPORTIF" onModify={() => onGoToStep(2)} />
-      <SummaryRow
-        label="Sport de combat"
-        value={data.aExperienceCombat ? "Oui" : "Non"}
-      />
+      <SummaryRow label="SPORT DE COMBAT" value={data.aExperienceCombat ? "Oui" : "Non"} />
       {data.aExperienceCombat && (
         <>
-          <SummaryRow label="Discipline" value={data.discipline} />
-          <SummaryRow label="Niveau" value={data.niveau} />
+          <SummaryRow label="NIVEAU" value={data.niveau} />
+          <SummaryRow label="COMPÉTITIONS" value={competitionsText(data)} />
         </>
       )}
 
-      <SectionHeader title="MOTIVATION" onModify={() => onGoToStep(3)} />
-      <SummaryRow label="Objectifs" value={data.objectifs.join(", ")} />
-      <SummaryRow label="Source" value={data.commentConnu} />
-      <SummaryRow label="Photo" value={data.photoFileName} />
+      <SectionHeader title="PHOTO" onModify={() => onGoToStep(3)} />
+      <SummaryRow label="FICHIER" value={data.photo?.name ?? ""} />
+      <SummaryRow label="SOURCE" value={data.commentConnu} />
 
       <label className="mt-8 flex items-start gap-3 text-sm text-neutral-400">
         <input

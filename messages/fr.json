@@ -1,0 +1,40 @@
+{
+  "Navbar": {
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contact",
+    "language": "Langue"
+  },
+  "Home": {
+    "title": "Bienvenue sur notre plateforme",
+    "description": "Découvrez nos services.",
+    "learnMore": "En savoir plus"
+  },
+  "IntroSection": {
+    "eyebrow": "L'agence",
+    "titleLine1": "UNE MEUTE,",
+    "titleLine2": "PAS UN CATALOGUE.",
+    "description": "Los Leones accompagne ses fighters à chaque étape de leur carrière : progression technique, préparation physique, mental de compétiteur, et mise en relation avec les bonnes opportunités pour se faire un nom dans le MMA.",
+    "discoverClub": "DÉCOUVRIR LE CLUB",
+    "point1": "Détection et recrutement de combattants au potentiel réel.",
+    "point2": "Négociation des bourses, des clauses et des droits d'image.", 
+    "point3": "Mise en relation avec promoteurs, sponsors et organisations.",
+    "discover": "DÉCOUVRIR LOS LEONES"
+  },
+  "Header": {
+    "logoAlt": "Los Leones MMA Club Sénégal",
+    "clubTagline": "MMA CLUB SÉNÉGAL",
+    "nav": {
+      "home": "ACCUEIL",
+      "club": "LE CLUB",
+      "fighters": "FIGHTERS",
+      "agent": "L'AGENT",
+      "partners": "PARTENAIRES",
+      "news": "ACTUALITÉS"
+    },
+    "contact": "CONTACT",
+    "join": "REJOINDRE LOS LEONES",
+    "joinMobile": "REJOINDRE",
+    "openMenu": "Ouvrir le menu"
+  }
+}

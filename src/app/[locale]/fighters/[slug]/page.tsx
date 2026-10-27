@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { mockFighters } from "@/components/data/mock-fighters";
+import { getFighter, getFighters } from "@/lib/public-api";
 import FighterHero from "@/components/fighters/FighterHero";
 import FighterStats from "@/components/fighters/FighterStats";
 import FighterBio from "@/components/fighters/FighterBio";
@@ -12,14 +12,18 @@ type PageProps = {
 
 export default async function FighterProfilePage({ params }: PageProps) {
   const { slug } = await params;
-  const fighter = mockFighters.find((f) => f.slug === slug);
+
+  const [fighter, allFighters] = await Promise.all([
+    getFighter(slug),
+    getFighters(),
+  ]);
 
   if (!fighter) {
     notFound();
   }
 
-  const otherFighters = mockFighters
-    .filter((f) => f.slug !== fighter.slug)
+  const otherFighters = allFighters
+    .filter((f) => f.id !== fighter.id)
     .slice(0, 3);
 
   return (

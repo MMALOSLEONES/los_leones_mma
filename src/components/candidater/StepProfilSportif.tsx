@@ -1,6 +1,7 @@
-import { ApplicationFormData } from "@/components/types/application";
+import type { ApplicationFormData } from "@/components/types/application";
 import FormField from "@/components/candidater/FormField";
 import Pill from "@/components/candidater/Pill";
+import { countError, recordError } from "@/lib/validation";
 
 type Props = {
   data: ApplicationFormData;
@@ -9,13 +10,40 @@ type Props = {
   onBack: () => void;
 };
 
-const disciplines = ["MMA", "Boxe", "Kickboxing", "Grappling", "Lutte", "Judo", "Karaté", "Taekwondo", "Autre"];
 const niveaux = ["Débutant", "Intermédiaire", "Avancé", "Professionnel"];
 
+const recordFields = [
+  { label: "Combats", key: "nombreCombats" },
+  { label: "Victoires", key: "victoires" },
+  { label: "Défaites", key: "defaites" },
+  { label: "Nuls", key: "nuls" },
+  { label: "KO", key: "kos" },
+  { label: "Soumissions", key: "soumissions" },
+] as const;
+
+const emptyRecord = {
+  nombreCombats: "",
+  victoires: "",
+  defaites: "",
+  nuls: "",
+  kos: "",
+  soumissions: "",
+};
+
 export default function StepProfilSportif({ data, update, onNext, onBack }: Props) {
+  const anyCountError = recordFields.some(({ key }) => countError(data[key]));
+  const recordErr = recordError(data);
+
+  const competitionsOk =
+    data.aFaitCompetitions === false ||
+    (data.aFaitCompetitions === true &&
+      Number(data.nombreCombats) >= 1 &&
+      !anyCountError &&
+      !recordErr);
+
   const isValid =
     data.aExperienceCombat === false ||
-    (data.aExperienceCombat === true && data.discipline && data.niveau);
+    (data.aExperienceCombat === true && Boolean(data.niveau) && competitionsOk);
 
   return (
     <div>
@@ -26,22 +54,13 @@ export default function StepProfilSportif({ data, update, onNext, onBack }: Prop
           PRATIQUEZ-VOUS DÉJÀ UN SPORT DE COMBAT ?
         </p>
         <div className="mt-3 flex gap-2">
-          <Pill
-            active={data.aExperienceCombat === true}
-            onClick={() => update({ aExperienceCombat: true })}
-          >
+          <Pill active={data.aExperienceCombat === true} onClick={() => update({ aExperienceCombat: true })}>
             OUI
           </Pill>
           <Pill
             active={data.aExperienceCombat === false}
             onClick={() =>
-              update({
-                aExperienceCombat: false,
-                discipline: "",
-                niveau: "",
-                anneesPratique: "",
-                aFaitCompetitions: null,
-              })
+              update({ aExperienceCombat: false, niveau: "", aFaitCompetitions: null, ...emptyRecord })
             }
           >
             NON
@@ -51,43 +70,11 @@ export default function StepProfilSportif({ data, update, onNext, onBack }: Prop
 
       {data.aExperienceCombat === true && (
         <div className="mt-8 space-y-8 border-t border-white/10 pt-8">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div>
-              <label className="block text-xs font-semibold tracking-widest text-neutral-400">
-                DISCIPLINE
-              </label>
-              <select
-                value={data.discipline}
-                onChange={(e) => update({ discipline: e.target.value })}
-                className="mt-2 w-full rounded-md border border-white/15 bg-neutral-900 px-4 py-3 text-sm text-white focus:border-orange-500 focus:outline-none"
-              >
-                <option value="">Choisir...</option>
-                {disciplines.map((d) => (
-                  <option key={d} value={d}>
-                    {d}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <FormField
-              label="Années de pratique"
-              type="number"
-              value={data.anneesPratique}
-              onChange={(v) => update({ anneesPratique: v })}
-            />
-          </div>
-
           <div>
-            <p className="text-xs font-semibold tracking-widest text-neutral-400">
-              NIVEAU
-            </p>
+            <p className="text-xs font-semibold tracking-widest text-neutral-400">NIVEAU</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {niveaux.map((n) => (
-                <Pill
-                  key={n}
-                  active={data.niveau === n}
-                  onClick={() => update({ niveau: n })}
-                >
+                <Pill key={n} active={data.niveau === n} onClick={() => update({ niveau: n })}>
                   {n.toUpperCase()}
                 </Pill>
               ))}
@@ -99,25 +86,12 @@ export default function StepProfilSportif({ data, update, onNext, onBack }: Prop
               AVEZ-VOUS DÉJÀ PARTICIPÉ À DES COMPÉTITIONS ?
             </p>
             <div className="mt-3 flex gap-2">
-              <Pill
-                active={data.aFaitCompetitions === true}
-                onClick={() => update({ aFaitCompetitions: true })}
-              >
+              <Pill active={data.aFaitCompetitions === true} onClick={() => update({ aFaitCompetitions: true })}>
                 OUI
               </Pill>
               <Pill
                 active={data.aFaitCompetitions === false}
-                onClick={() =>
-                  update({
-                    aFaitCompetitions: false,
-                    nombreCombats: "",
-                    victoires: "",
-                    defaites: "",
-                    nuls: "",
-                    kos: "",
-                    soumissions: "",
-                  })
-                }
+                onClick={() => update({ aFaitCompetitions: false, ...emptyRecord })}
               >
                 NON
               </Pill>
@@ -125,43 +99,25 @@ export default function StepProfilSportif({ data, update, onNext, onBack }: Prop
           </div>
 
           {data.aFaitCompetitions === true && (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <FormField
-                label="Combats"
-                type="number"
-                value={data.nombreCombats}
-                onChange={(v) => update({ nombreCombats: v })}
-              />
-              <FormField
-                label="Victoires"
-                type="number"
-                value={data.victoires}
-                onChange={(v) => update({ victoires: v })}
-              />
-              <FormField
-                label="Défaites"
-                type="number"
-                value={data.defaites}
-                onChange={(v) => update({ defaites: v })}
-              />
-              <FormField
-                label="Nuls"
-                type="number"
-                value={data.nuls}
-                onChange={(v) => update({ nuls: v })}
-              />
-              <FormField
-                label="KO"
-                type="number"
-                value={data.kos}
-                onChange={(v) => update({ kos: v })}
-              />
-              <FormField
-                label="Soumissions"
-                type="number"
-                value={data.soumissions}
-                onChange={(v) => update({ soumissions: v })}
-              />
+            <div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                {recordFields.map(({ label, key }) => (
+                  <FormField
+                    key={key}
+                    label={label}
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    required={key === "nombreCombats"}
+                    value={data[key]}
+                    onChange={(v) => update({ [key]: v })}
+                    error={countError(data[key])}
+                  />
+                ))}
+              </div>
+              {recordErr && !anyCountError && (
+                <p className="mt-4 text-xs text-red-400">{recordErr}</p>
+              )}
             </div>
           )}
         </div>

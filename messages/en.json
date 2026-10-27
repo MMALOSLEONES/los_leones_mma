@@ -1,0 +1,35 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "language": "Language"
+  },
+  "Home": {
+    "title": "Welcome to our platform",
+    "description": "Discover our services.",
+    "learnMore": "Learn more"
+  },
+  "IntroSection": {
+    "titleLine1": "MORE THAN A CLUB.",
+    "titleLine2": "A TEAM.",
+    "description": "Los Leones supports its fighters at every stage of their careers: technical development, physical conditioning, a competitor's mindset, and connections to the right opportunities to make a name for themselves in MMA.",
+    "discoverClub": "DISCOVER THE CLUB"
+  },
+  "Header": {
+    "logoAlt": "Los Leones MMA Club Senegal",
+    "clubTagline": "MMA CLUB SENEGAL",
+    "nav": {
+      "home": "HOME",
+      "club": "THE CLUB",
+      "fighters": "FIGHTERS",
+      "agent": "THE AGENT",
+      "partners": "PARTNERS",
+      "news": "NEWS"
+    },
+    "contact": "CONTACT",
+    "join": "JOIN LOS LEONES",
+    "joinMobile": "JOIN",
+    "openMenu": "Open menu"
+  }
+}

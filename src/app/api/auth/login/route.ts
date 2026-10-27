@@ -1,47 +1,57 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { TOKEN_COOKIE } from "@/lib/session";
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.API_URL || "http://localhost:8000/api";
 
-export async function POST(request: Request) {
-  const { email, password } = await request.json();
-
-  let laravelResponse: Response;
+export async function POST(request: NextRequest) {
   try {
-    laravelResponse = await fetch(`${API_URL}/login`, {
+    const credentials = await request.json();
+
+    // 1. Envoyer la demande d'authentification au back-end Laravel
+    console.log("Appel Laravel :", `${API_URL}/login`);
+    const laravelResponse = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Indispensable avec Laravel : sans ce header, une erreur de
-        // validation renvoie une redirection HTML au lieu d'un JSON 422.
-        Accept: "application/json",
+        "Accept": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify(credentials),
+      cache: "no-store",
     });
-  } catch {
+
+    const result = await laravelResponse.json();
+
+    if (!laravelResponse.ok) {
+      return NextResponse.json(
+        { message: result.message || "Identifiants incorrects." },
+        { status: laravelResponse.status }
+      );
+    }
+
+    // 2. Extraire le token renvoyé par Laravel (ex: token Sanctum)
+    const token = result.token;
+
+    const response = NextResponse.json({
+      message: "Connexion réussie !",
+      user: result.user,
+    }, { status: 200 });
+
+    // 3. Sécuriser le token dans un cookie httpOnly côté client
+    if (token) {
+      response.cookies.set(TOKEN_COOKIE, token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 1 semaine
+      });
+    }
+
+    return response;
+  } catch (error) {
     return NextResponse.json(
-      { status: "error", message: "Serveur injoignable." },
+      { message: "Serveur d'authentification injoignable." },
       { status: 502 }
     );
   }
-
-  const result = await laravelResponse.json().catch(() => ({}));
-
-  if (!laravelResponse.ok) {
-    return NextResponse.json(
-      { status: "error", message: result.message || "Connexion impossible." },
-      { status: laravelResponse.status }
-    );
-  }
-
-  const response = NextResponse.json({ status: "ok" });
-  response.cookies.set(TOKEN_COOKIE, result.token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 jours
-  });
-
-  return response;
 }

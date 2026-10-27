@@ -8,7 +8,7 @@ import {
 import StepIndicator from "@/components/candidater/StepIndicator";
 import StepInformations from "@/components/candidater/StepInformations";
 import StepProfilSportif from "@/components/candidater/StepProfilSportif";
-import StepMotivation from "@/components/candidater/StepMotivation";
+import StepPhoto from "@/components/candidater/StepPhoto";
 import StepVerification from "@/components/candidater/StepVerification";
 import ConfirmationScreen from "@/components/candidater/ConfirmationScreen";
 
@@ -29,19 +29,22 @@ export default function CandidaterPage() {
     setSubmitError("");
 
     try {
-      const response = await fetch("/api/demandes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      // Le fichier ne peut pas passer dans du JSON : on envoie un formulaire
+      // "multipart" avec les champs d'un côté et la photo de l'autre.
+      const { photo, ...fields } = data;
+      const body = new FormData();
+      body.append("data", JSON.stringify(fields));
+      if (photo) body.append("photo", photo);
 
-      const result = await response.json();
+      // Pas de header Content-Type : le navigateur l'ajoute avec le bon séparateur
+      const response = await fetch("/api/candidatures", { method: "POST", body });
+      const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(result.message || "Erreur lors de l'envoi.");
+        throw new Error(result.message || `Erreur serveur (${response.status}).`);
       }
 
-      setReferenceCode(result.referenceCode);
+      setReferenceCode(result.referenceCode ?? "");
       setSubmitted(true);
     } catch (error) {
       setSubmitError(
@@ -64,15 +67,10 @@ export default function CandidaterPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 lg:px-8">
-      <p className="text-xs font-semibold tracking-[0.3em] text-orange-500">
-        CANDIDATURE
-      </p>
-      <h1 className="mt-3 text-4xl font-extrabold text-white sm:text-5xl">
-        DEVENIR UN LEONE
-      </h1>
+      <p className="text-xs font-semibold tracking-[0.3em] text-orange-500">CANDIDATURE</p>
+      <h1 className="mt-3 text-4xl font-extrabold text-white sm:text-5xl">DEVENIR UN LEONE</h1>
       <p className="mt-3 text-sm text-neutral-400">
-        Moins de 5 minutes. Aucun compte à créer. Nos agents étudient chaque
-        dossier.
+        Moins de 5 minutes. Aucun compte à créer. Réservé aux personnes majeures.
       </p>
 
       <div className="mt-10 border-t border-white/10 pt-8">
@@ -87,11 +85,7 @@ export default function CandidaterPage() {
 
       <div className="mt-10">
         {step === 1 && (
-          <StepInformations
-            data={data}
-            update={update}
-            onNext={() => setStep(2)}
-          />
+          <StepInformations data={data} update={update} onNext={() => setStep(2)} />
         )}
         {step === 2 && (
           <StepProfilSportif
@@ -102,7 +96,7 @@ export default function CandidaterPage() {
           />
         )}
         {step === 3 && (
-          <StepMotivation
+          <StepPhoto
             data={data}
             update={update}
             onNext={() => setStep(4)}

@@ -13,4 +13,5 @@ export interface Article {
   date: string;
   excerpt: string;
   content: string[];
+  photos: string[];
 }

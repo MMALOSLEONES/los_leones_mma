@@ -13,8 +13,16 @@ export default function FighterHero({ fighter }: { fighter: Fighter }) {
 
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[320px_1fr]">
         {/* Photo */}
-        <div className="aspect-[3/4] w-full max-w-sm rounded-md bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)]" />
-
+        <div className="relative aspect-[3/4] w-full max-w-sm overflow-hidden rounded-md bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)]">
+          {fighter.photoUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={fighter.photoUrl}
+              alt={fighter.fullName}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+        </div>
         {/* Infos */}
         <div>
           <div className="flex flex-wrap gap-2">

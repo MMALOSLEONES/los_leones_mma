@@ -1,14 +1,20 @@
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import type { Metadata } from "next";
 import "./globals.css";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const metadata: Metadata = {
+  title: "Los Leones MMA",
+  description: "Los Leones MMA"
+};
+
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="fr">
       <body className="bg-black text-white">
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );

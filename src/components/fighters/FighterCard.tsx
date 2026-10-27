@@ -8,6 +8,14 @@ export default function FighterCard({ fighter }: { fighter: Fighter }) {
       className="group block overflow-hidden rounded-md bg-neutral-900"
     >
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)]">
+        {fighter.photoUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={fighter.photoUrl}
+            alt={fighter.fullName}
+            className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+        )}
         <span className="absolute left-3 top-3 rounded bg-orange-500 px-2 py-1 text-[10px] font-bold tracking-widest text-black">
           {fighter.discipline}
         </span>
