@@ -1,19 +1,20 @@
 import Button from "@/components/ui/Button";
+import { getTranslations } from "next-intl/server";
 
-export default function CTASection() {
+export default async function CTASection() {
+  const t = await getTranslations("CTASection");
+
   return (
     <section className="border-t border-white/10 bg-neutral-950">
       <div className="mx-auto max-w-4xl px-4 py-24 text-center lg:px-8">
         <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-          DEVIENS UN LEONE
+          {t("title")}
         </h2>
-        <p className="mt-4 text-neutral-400">
-          Rejoins une équipe qui investit dans tes ambitions de combattant.
-        </p>
+        <p className="mt-4 text-neutral-400">{t("description")}</p>
         <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-          <Button href="/candidater">REJOINDRE LOS LEONES</Button>
+          <Button href="/candidater">{t("apply")}</Button>
           <Button href="/contact" variant="outline">
-            NOUS CONTACTER
+            {t("contact")}
           </Button>
         </div>
       </div>

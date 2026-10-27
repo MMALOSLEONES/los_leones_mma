@@ -3,35 +3,30 @@ import ClubSection from "@/components/club/ClubSection";
 import GallerySection from "@/components/club/GallerySection";
 import ValuesSection from "@/components/home/ValuesSection";
 import CTASection from "@/components/home/CTASection";
+import { getTranslations } from "next-intl/server";
 
-export default function ClubPage() {
+export default async function ClubPage() {
+  const t = await getTranslations("ClubPage");
+
   return (
     <main>
       <ClubHero />
 
       <ClubSection
-        eyebrow="NOTRE HISTOIRE"
-        title="Né d'une conviction"
-        paragraphs={[
-          "Los Leones est née d'un constat simple : le Sénégal regorge de combattants talentueux, mais trop peu d'entre eux ont accès à un vrai accompagnement de carrière.",
-          "L'agence a été fondée pour combler ce manque — repérer les talents, les préparer sérieusement, et leur ouvrir des portes qu'ils n'auraient pas pu franchir seuls.",
-        ]}
+        eyebrow={t("history.eyebrow")}
+        title={t("history.title")}
+        paragraphs={[t("history.p1"), t("history.p2")]}
       />
 
       <ClubSection
-        eyebrow="NOTRE VISION"
-        title="Porter le MMA sénégalais plus haut"
+        eyebrow={t("vision.eyebrow")}
+        title={t("vision.title")}
         reverse
-        paragraphs={[
-          "Devenir la référence du management de fighters MMA en Afrique de l'Ouest, reconnue pour l'exigence de son accompagnement et l'intégrité de sa méthode.",
-          "Chaque Leone représenté doit pouvoir se concentrer sur une seule chose : combattre au plus haut niveau, pendant que l'agence gère le reste.",
-        ]}
+        paragraphs={[t("vision.p1"), t("vision.p2")]}
       />
 
       <ValuesSection />
-
       <GallerySection />
-
       <CTASection />
     </main>
   );

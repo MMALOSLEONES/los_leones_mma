@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { mockGallery } from "@/components/data/mock-gallery";
 
 export default function GallerySection() {
+  const t = useTranslations("GallerySection");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const close = () => setSelectedIndex(null);
@@ -17,10 +19,10 @@ export default function GallerySection() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
       <p className="text-xs font-semibold tracking-[0.3em] text-orange-500">
-        GALERIE
+        {t("eyebrow")}
       </p>
       <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
-        L&apos;AGENCE EN IMAGES
+        {t("title")}
       </h2>
 
       <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
@@ -28,7 +30,7 @@ export default function GallerySection() {
           <button
             key={image.id}
             onClick={() => setSelectedIndex(index)}
-            aria-label={`Agrandir : ${image.alt}`}
+            aria-label={t("enlarge", { alt: image.alt })}
             className={`aspect-square overflow-hidden rounded-md bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)] transition hover:opacity-80 ${
               index === 0 ? "col-span-2 row-span-2 aspect-auto" : ""
             }`}
@@ -46,7 +48,7 @@ export default function GallerySection() {
               e.stopPropagation();
               showPrev();
             }}
-            aria-label="Image précédente"
+            aria-label={t("previous")}
             className="absolute left-4 text-3xl text-white/70 hover:text-white"
           >
             ‹
@@ -62,7 +64,7 @@ export default function GallerySection() {
               e.stopPropagation();
               showNext();
             }}
-            aria-label="Image suivante"
+            aria-label={t("next")}
             className="absolute right-4 text-3xl text-white/70 hover:text-white"
           >
             ›
@@ -70,7 +72,7 @@ export default function GallerySection() {
 
           <button
             onClick={close}
-            aria-label="Fermer"
+            aria-label={t("close")}
             className="absolute right-4 top-4 text-2xl text-white/70 hover:text-white"
           >
             ✕

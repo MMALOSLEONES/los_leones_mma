@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ReactNode } from "react";
+import { Link } from "@/i18n/navigation";   
 
 type ButtonProps = {
   href: string;

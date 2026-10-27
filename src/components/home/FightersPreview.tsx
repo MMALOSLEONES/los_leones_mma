@@ -1,11 +1,12 @@
+import { getTranslations } from "next-intl/server";
 import { getFighters } from "@/lib/public-api";
 import FighterCard from "@/components/fighters/FighterCard";
 import Button from "@/components/ui/Button";
 
 export default async function FightersPreview() {
+  const t = await getTranslations("FightersPreview");
   const fighters = (await getFighters()).slice(0, 4);
 
-  // Pas de section vide sur l'accueil tant qu'il n'y a aucun fighter
   if (fighters.length === 0) return null;
 
   return (
@@ -13,14 +14,12 @@ export default async function FightersPreview() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-            MEET THE LEONES
+            {t("title")}
           </h2>
-          <p className="mt-2 text-neutral-400">
-            Nos combattants. Notre équipe.
-          </p>
+          <p className="mt-2 text-neutral-400">{t("subtitle")}</p>
         </div>
         <Button href="/fighters" variant="outline" className="w-fit">
-          VOIR TOUS LES FIGHTERS
+          {t("viewAll")}
         </Button>
       </div>
 

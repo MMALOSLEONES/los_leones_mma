@@ -1,7 +1,10 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Article } from "@/components/types/article";
 
-export default function FeaturedArticle({ article }: { article: Article }) {
+export default async function FeaturedArticle({ article }: { article: Article }) {
+  const t = await getTranslations("FeaturedArticle");
+
   return (
     <Link
       href={`/actualites/${article.slug}`}
@@ -26,7 +29,7 @@ export default function FeaturedArticle({ article }: { article: Article }) {
         </h2>
         <p className="mt-4 text-neutral-400">{article.excerpt}</p>
         <span className="mt-6 inline-block text-xs font-bold tracking-widest text-orange-500 group-hover:text-orange-400">
-          LIRE L&apos;ARTICLE →
+          {t("read")}
         </span>
       </div>
     </Link>

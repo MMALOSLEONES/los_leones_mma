@@ -1,14 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useParams } from "next/navigation"; // 💡 Modification 1 : Ajout de useParams
+import { useRouter } from "next/navigation";
 import FormField from "@/components/candidater/FormField";
 
 export default function LoginPage() {
   const router = useRouter();
-  
-  const params = useParams(); // 💡 Modification 2 : Récupérer le paramètre de langue
-  const locale = params?.locale || "fr";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,8 +30,8 @@ export default function LoginPage() {
         throw new Error(result.message || "Connexion impossible.");
       }
 
-      // 💡 Modification 3 : Rediriger vers /fr/dashboard ou /en/dashboard dynamiquement
-      router.push(`/${locale}/dashboard`);
+      router.push("/dashboard");
+      router.refresh();
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Une erreur est survenue."

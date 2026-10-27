@@ -1,9 +1,12 @@
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import { hasLocale } from "next-intl";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import SiteChrome from "@/components/layout/SiteChrome";
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export default async function LocaleLayout({
   children,
@@ -18,13 +21,12 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  setRequestLocale(locale);            // ← nouveau
   const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider messages={messages}>
-      <SiteChrome>
-        {children}
-      </SiteChrome>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <SiteChrome>{children}</SiteChrome>
     </NextIntlClientProvider>
   );
 }

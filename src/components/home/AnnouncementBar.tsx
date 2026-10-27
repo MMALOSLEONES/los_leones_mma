@@ -1,21 +1,17 @@
+import { getTranslations } from "next-intl/server";
 
-const announcements = [
-  "IMPORTANT",
-  "CAMP",
-  "IMPORANT",
-  "CAMP",
-  "IMPORTANT",
-   "IMPORTANT",
-  "CAMP",
-  "IMPORANT",
-  "CAMP",
-  "IMPORTANT"
-];
+const keys = [
+  "important", "camp", "important", "camp", "important",
+  "important", "camp", "important", "camp", "important",
+] as const;
 
-export default function AnnouncementBar() {
+export default async function AnnouncementBar() {
+  const t = await getTranslations("AnnouncementBar");
+  const announcements = keys.map((key) => t(key));
+
   return (
     <section
-      aria-label="Les valeurs de Los Leones"
+      aria-label={t("ariaLabel")}
       className="overflow-hidden border-y border-black/20 bg-orange-500 py-4"
     >
       <div className="flex w-max animate-marquee">
@@ -27,7 +23,6 @@ export default function AnnouncementBar() {
             <span className="whitespace-nowrap text-xs font-black uppercase tracking-[0.2em] text-black sm:text-sm">
               {item}
             </span>
-
             <span
               aria-hidden="true"
               className="h-2 w-2 shrink-0 rotate-45 bg-black"

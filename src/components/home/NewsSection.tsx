@@ -1,11 +1,12 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { getArticles } from "@/lib/public-api";
 import ArticleCard from "@/components/actualites/ArticleCard";
 
 export default async function NewsSection() {
+  const t = await getTranslations("NewsSection");
   const articles = (await getArticles()).slice(0, 3);
 
-  // Ne pas afficher de section vide
   if (articles.length === 0) return null;
 
   return (
@@ -16,12 +17,11 @@ export default async function NewsSection() {
             <div className="mb-4 flex items-center gap-3">
               <span className="h-px w-6 bg-orange-500" />
               <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-orange-500">
-                Actualités
+                {t("eyebrow")}
               </span>
             </div>
-
             <h2 className="text-4xl font-extrabold uppercase text-white sm:text-5xl">
-              La vie de l'agence
+              {t("title")}
             </h2>
           </div>
 
@@ -29,7 +29,7 @@ export default async function NewsSection() {
             href="/actualites"
             className="hidden border border-neutral-800 px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-white transition hover:border-neutral-600 sm:block"
           >
-            Toutes les actus
+            {t("all")}
           </Link>
         </div>
 
@@ -44,7 +44,7 @@ export default async function NewsSection() {
             href="/actualites"
             className="text-xs font-bold uppercase tracking-widest text-white"
           >
-            Toutes les actus →
+            {t("all")} →
           </Link>
         </div>
       </div>

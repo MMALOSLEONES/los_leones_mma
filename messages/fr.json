@@ -17,7 +17,7 @@
     "description": "Los Leones accompagne ses fighters à chaque étape de leur carrière : progression technique, préparation physique, mental de compétiteur, et mise en relation avec les bonnes opportunités pour se faire un nom dans le MMA.",
     "discoverClub": "DÉCOUVRIR LE CLUB",
     "point1": "Détection et recrutement de combattants au potentiel réel.",
-    "point2": "Négociation des bourses, des clauses et des droits d'image.", 
+    "point2": "Négociation des bourses, des clauses et des droits d'image.",
     "point3": "Mise en relation avec promoteurs, sponsors et organisations.",
     "discover": "DÉCOUVRIR LOS LEONES"
   },
@@ -36,5 +36,232 @@
     "join": "REJOINDRE LOS LEONES",
     "joinMobile": "REJOINDRE",
     "openMenu": "Ouvrir le menu"
+  },
+  "Hero": {
+    "eyebrow": "MIXED MARTIAL ARTS MANAGEMENT — SENEGAL",
+    "titleLine1": "DEVIENS",
+    "titleLine2": "UN LION.",
+    "description": "Los Leones repère, développe et accompagne des combattants MMA vers le plus haut niveau.",
+    "ctaApply": "DEVENIR UN LEONE",
+    "ctaFighters": "DÉCOUVRIR LES FIGHTERS"
+  },
+  "AnnouncementBar": {
+    "ariaLabel": "Annonces de Los Leones",
+    "important": "IMPORTANT",
+    "camp": "CAMP"
+  },
+  "NewsSection": {
+    "eyebrow": "Actualités",
+    "title": "La vie de l'agence",
+    "all": "Toutes les actus"
+  },
+  "ValuesSection": {
+    "eyebrow": "Notre philosophie",
+    "title": "Nos valeurs",
+    "description": "Plus qu'un sport, un état d'esprit. Les principes qui guident chaque Leone.",
+    "items": {
+      "discipline": {
+        "title": "DISCIPLINE",
+        "description": "La progression commence par la discipline."
+      },
+      "strength": {
+        "title": "FORCE",
+        "description": "Développer son corps et son mental."
+      },
+      "respect": {
+        "title": "RESPECT",
+        "description": "Respecter ses partenaires, ses coachs et ses adversaires."
+      },
+      "determination": {
+        "title": "DÉTERMINATION",
+        "description": "Continuer même lorsque le combat devient difficile."
+      }
+    }
+  },
+  "FightersPreview": {
+    "title": "MEET THE LEONES",
+    "subtitle": "Nos combattants. Notre équipe.",
+    "viewAll": "VOIR TOUS LES FIGHTERS"
+  },
+  "PartnersSection": {
+    "eyebrow": "Partenaires",
+    "title": "Travailler avec l'agence",
+    "description": "Promoteurs, sponsors, salles et médias : quatre façons de collaborer.",
+    "cta": "DEVENIR PARTENAIRE",
+    "items": {
+      "sponsoring": {
+        "title": "SPONSORING",
+        "description": "Associez votre marque à un roster de combattants suivis et visibles, en compétition toute l'année."
+      },
+      "fights": {
+        "title": "ORGANISATION DE COMBATS",
+        "description": "Promoteurs et matchmakers : accédez rapidement à des profils vérifiés, avec records et catégories à jour."
+      },
+      "gyms": {
+        "title": "COLLABORATION SALLE / CLUB",
+        "description": "Salles et clubs partenaires : accueillez nos camps, détectez ensemble les prochains talents."
+      },
+      "media": {
+        "title": "VISIBILITÉ MÉDIA",
+        "description": "Médias et créateurs : accès aux combattants, aux coulisses et aux fight weeks."
+      }
+    }
+  },
+  "CTASection": {
+    "title": "DEVIENS UN LEONE",
+    "description": "Rejoins une équipe qui investit dans tes ambitions de combattant.",
+    "apply": "REJOINDRE LOS LEONES",
+    "contact": "NOUS CONTACTER"
+  },
+  "ClubHero": {
+    "eyebrow": "LOS LEONES",
+    "title": "LE CLUB",
+    "description": "Une agence de management de fighters MMA, née à Dakar, pour donner aux combattants sénégalais les moyens d'aller plus loin."
+  },
+  "ClubPage": {
+    "history": {
+      "eyebrow": "NOTRE HISTOIRE",
+      "title": "Né d'une conviction",
+      "p1": "Los Leones est née d'un constat simple : le Sénégal regorge de combattants talentueux, mais trop peu d'entre eux ont accès à un vrai accompagnement de carrière.",
+      "p2": "L'agence a été fondée pour combler ce manque — repérer les talents, les préparer sérieusement, et leur ouvrir des portes qu'ils n'auraient pas pu franchir seuls."
+    },
+    "vision": {
+      "eyebrow": "NOTRE VISION",
+      "title": "Porter le MMA sénégalais plus haut",
+      "p1": "Devenir la référence du management de fighters MMA en Afrique de l'Ouest, reconnue pour l'exigence de son accompagnement et l'intégrité de sa méthode.",
+      "p2": "Chaque Leone représenté doit pouvoir se concentrer sur une seule chose : combattre au plus haut niveau, pendant que l'agence gère le reste."
+    }
+  },
+  "GallerySection": {
+    "eyebrow": "GALERIE",
+    "title": "L'AGENCE EN IMAGES",
+    "enlarge": "Agrandir : {alt}",
+    "previous": "Image précédente",
+    "next": "Image suivante",
+    "close": "Fermer"
+  },
+  "AgentHero": {
+    "eyebrow": "L'AGENT",
+    "role": "FONDATEUR & AGENT — LOS LEONES",
+    "p1": "Fondateur de Los Leones, Sidy Ndiaye a bâti son parcours autour d'une conviction simple : le talent ne suffit pas, il faut aussi la bonne structure pour percer dans le MMA.",
+    "p2": "Après des années à observer le manque d'accompagnement sérieux offert aux combattants sénégalais, il a fondé Los Leones pour combler ce vide — repérer les talents, les préparer, et leur ouvrir les portes qu'ils n'auraient pas pu franchir seuls.",
+    "p3": "Aujourd'hui, il est le point de contact direct entre les fighters représentés par l'agence et l'écosystème MMA — promoteurs, sponsors, salles partenaires."
+  },
+  "AgentOffer": {
+    "eyebrow": "CE QU'IL APPORTE",
+    "title": "UN VRAI ACCOMPAGNEMENT",
+    "items": {
+      "networking": {
+        "title": "MISE EN RELATION",
+        "description": "Contact direct avec des promoteurs, des sponsors et des salles partenaires."
+      },
+      "negotiation": {
+        "title": "NÉGOCIATION",
+        "description": "Gestion des contrats de combat pour défendre les intérêts du fighter."
+      },
+      "career": {
+        "title": "ACCOMPAGNEMENT CARRIÈRE",
+        "description": "Un suivi sur le long terme, pas juste combat par combat."
+      },
+      "visibility": {
+        "title": "VISIBILITÉ",
+        "description": "Mise en avant des fighters auprès de l'écosystème MMA et du public."
+      }
+    }
+  },
+  "PartnerHero": {
+    "eyebrow": "PARTENAIRES",
+    "title": "DEVENIR PARTENAIRE DE LOS LEONES",
+    "description": "Promoteurs, sponsors, salles et marques — associez-vous à une agence qui structure et fait grandir une génération de combattants sénégalais.",
+    "cta": "NOUS CONTACTER"
+  },
+  "PartnerIntro": {
+    "eyebrow": "PARTENARIAT PRIVILÉGIÉ",
+    "title": "UN ROSTER SUIVI, UNE IMAGE MAÎTRISÉE",
+    "description": "Les fighters représentés par Los Leones sont accompagnés avec rigueur : préparation, discipline, image maîtrisée. Chaque partenariat bénéficie de cette exigence — votre marque associée à des combattants sérieux, pas à l'improvisation.",
+    "highlights": {
+      "roster": {
+        "title": "ROSTER",
+        "description": "8 fighters actifs suivis en continu par l'agence."
+      },
+      "communication": {
+        "title": "COMMUNICATION",
+        "description": "Présence régulière et maîtrisée sur les réseaux sociaux."
+      },
+      "events": {
+        "title": "ÉVÉNEMENTS",
+        "description": "Participation à des cartes de combat locales et régionales."
+      },
+      "reporting": {
+        "title": "SUIVI",
+        "description": "Un reporting simple sur la visibilité générée."
+      }
+    }
+  },
+  "PartnershipTypes": {
+    "eyebrow": "FORMATS",
+    "title": "TYPES DE PARTENARIATS",
+    "items": {
+      "sponsoring": {
+        "title": "SPONSORING",
+        "bullet1": "Logo sur les équipements du fighter",
+        "bullet2": "Mise en avant sur les réseaux sociaux"
+      },
+      "fights": {
+        "title": "ORGANISATION DE COMBATS",
+        "bullet1": "Mise en relation avec des promoteurs",
+        "bullet2": "Disponibilité pour des cartes ciblées"
+      },
+      "gyms": {
+        "title": "COLLABORATION SALLE / CLUB",
+        "bullet1": "Accès à nos fighters pour stages ou séminaires",
+        "bullet2": "Échange de visibilité mutuelle"
+      },
+      "media": {
+        "title": "VISIBILITÉ MÉDIA",
+        "bullet1": "Interviews et contenus avec nos fighters",
+        "bullet2": "Couverture d'événements associés"
+      }
+    }
+  },
+  "PartnerCTA": {
+    "title": "PARLONS DE VOTRE PROJET",
+    "description": "Contactez-nous pour construire ensemble un partenariat qui vous ressemble.",
+    "contact": "NOUS CONTACTER",
+    "whatsappMessage": "Bonjour, je souhaite en savoir plus sur un partenariat avec Los Leones."
+  },
+  "ActualitesPage": {
+    "title": "NOUVEAUTÉS DU CLUB",
+    "description": "Combats, événements, coulisses : ce que vivent nos fighters.",
+    "empty": "Aucun article publié pour le moment."
+  },
+  "ArticlePage": {
+    "back": "‹ RETOUR AUX NOUVEAUTÉS"
+  },
+  "FeaturedArticle": {
+    "read": "LIRE L'ARTICLE →"
+  },
+  "ContactHero": {
+  "eyebrow": "CONTACT",
+  "title": "PARLONS COMBAT",
+  "description": "Fighters, promoteurs, sponsors ou médias — l'équipe Los Leones vous répond."
+},
+"ContactInfo": {
+  "title": "COORDONNÉES",
+  "address": "ADRESSE",
+  "phone": "TÉLÉPHONE",
+  "availability": "DISPONIBILITÉS",
+  "contactUs": "NOUS CONTACTER",
+  "join": "REJOINDRE LOS LEONES",
+  "social": "RÉSEAUX",
+  "schedule": {
+    "weekdays": { "day": "Lundi — Vendredi", "hours": "06:00 — 09:00 / 17:00 — 21:30" },
+    "saturday": { "day": "Samedi", "hours": "09:00 — 14:00" },
+    "sunday": { "day": "Dimanche", "hours": "Repos actif — sur rendez-vous" }
   }
+},
+"ContactMap": {
+  "city": "DAKAR, SÉNÉGAL",
+  "comingSoon": "CARTE À VENIR"
+}
 }

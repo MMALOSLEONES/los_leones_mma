@@ -1,21 +1,20 @@
 import { MapPin, Phone, MessageCircle, Mail } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { contactInfo, socialLinks } from "@/data/site";
 import Button from "@/components/ui/Button";
 
-const schedule = [
-  { day: "Lundi — Vendredi", hours: "06:00 — 09:00 / 17:00 — 21:30" },
-  { day: "Samedi", hours: "09:00 — 14:00" },
-  { day: "Dimanche", hours: "Repos actif — sur rendez-vous" },
-];
+const scheduleKeys = ["weekdays", "saturday", "sunday"] as const;
 
-export default function ContactInfo() {
+export default async function ContactInfo() {
+  const t = await getTranslations("ContactInfo");
+
   return (
     <div>
       <p className="text-xs font-semibold tracking-widest text-neutral-500">
         LOS LEONES MMA
       </p>
       <h2 className="mt-2 text-2xl font-extrabold text-white">
-        COORDONNÉES
+        {t("title")}
       </h2>
 
       <div className="mt-8 space-y-6">
@@ -23,7 +22,7 @@ export default function ContactInfo() {
           <MapPin size={18} className="mt-0.5 text-orange-500" />
           <div>
             <p className="text-xs font-semibold tracking-widest text-neutral-500">
-              ADRESSE
+              {t("address")}
             </p>
             <p className="mt-1 text-sm text-neutral-300">
               {contactInfo.address}
@@ -35,7 +34,7 @@ export default function ContactInfo() {
           <Phone size={18} className="mt-0.5 text-orange-500" />
           <div>
             <p className="text-xs font-semibold tracking-widest text-neutral-500">
-              TÉLÉPHONE
+              {t("phone")}
             </p>
             <a
               href={`tel:${contactInfo.phone}`}
@@ -58,7 +57,7 @@ export default function ContactInfo() {
               rel="noopener noreferrer"
               className="mt-1 block text-sm text-orange-500 hover:text-orange-400"
             >
-              {contactInfo.phone}
+              {contactInfo.whatsappNumber}
             </a>
           </div>
         </div>
@@ -81,31 +80,35 @@ export default function ContactInfo() {
 
       <div className="mt-10">
         <p className="text-xs font-semibold tracking-widest text-neutral-500">
-          DISPONIBILITÉS
+          {t("availability")}
         </p>
         <div className="mt-3 space-y-2">
-          {schedule.map((item) => (
+          {scheduleKeys.map((key) => (
             <div
-              key={item.day}
+              key={key}
               className="flex items-center justify-between text-sm"
             >
-              <span className="text-neutral-400">{item.day}</span>
-              <span className="text-neutral-300">{item.hours}</span>
+              <span className="text-neutral-400">
+                {t(`schedule.${key}.day`)}
+              </span>
+              <span className="text-neutral-300">
+                {t(`schedule.${key}.hours`)}
+              </span>
             </div>
           ))}
         </div>
       </div>
 
       <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-        <Button href={`mailto:${contactInfo.email}`}>NOUS CONTACTER</Button>
+        <Button href={`mailto:${contactInfo.email}`}>{t("contactUs")}</Button>
         <Button href="/candidater" variant="outline">
-          REJOINDRE LOS LEONES
+          {t("join")}
         </Button>
       </div>
 
       <div className="mt-10 border-t border-white/10 pt-6">
         <p className="text-xs font-semibold tracking-widest text-orange-500">
-          RÉSEAUX
+          {t("social")}
         </p>
         <div className="mt-3 flex flex-wrap gap-4">
           {socialLinks.map((social) => (

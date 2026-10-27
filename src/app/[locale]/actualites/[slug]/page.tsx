@@ -1,13 +1,15 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { getArticle } from "@/lib/public-api";
 
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 };
 
 export default async function ArticlePage({ params }: PageProps) {
   const { slug } = await params;
+  const t = await getTranslations("ArticlePage");
   const article = await getArticle(slug);
 
   if (!article) {
@@ -20,7 +22,7 @@ export default async function ArticlePage({ params }: PageProps) {
         href="/actualites"
         className="text-xs font-semibold tracking-widest text-orange-500 hover:text-orange-400"
       >
-        ‹ RETOUR AU FIL LEONES
+        {t("back")}
       </Link>
 
       <p className="mt-6 text-xs font-bold tracking-widest text-orange-500">

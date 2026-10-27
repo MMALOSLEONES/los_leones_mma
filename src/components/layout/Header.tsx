@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import MobileMenu from "@/components/layout/MobileMenu";
 import Image from "next/image";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -52,7 +53,7 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-
+          <LanguageSwitcher />
           {/* Actions desktop */}
           <div className="hidden items-center gap-4 lg:flex">
             <WhatsAppButton variant="outline" />
