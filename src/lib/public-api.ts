@@ -1,37 +1,39 @@
-import type { Fighter, FighterTier } from "@/components/types/fighter";
-import type { Article } from "@/components/types/article";
+
+import type { Fighter, FighterTier, WeightCategory } from "@/components/types/fighter";
+import type { Article, ArticleCategory } from "@/components/types/article";
 import type { ApiList, ArticleApi, FighterApi } from "@/components/types/api";
 import { unwrap } from "@/lib/api";
 
-// Lecture des données PUBLIQUES de Laravel (aucun token nécessaire).
-// À utiliser uniquement dans des Server Components : API_URL reste côté serveur.
+// Lecture des données publiques de Laravel.
+// À utiliser uniquement dans les Server Components.
 const API_URL = process.env.API_URL;
 
 async function fetchJson<T>(path: string): Promise<T | null> {
   try {
+    if (!API_URL) {
+      console.error("[public-api] La variable API_URL est manquante.");
+      return null;
+    }
+
     const response = await fetch(`${API_URL}${path}`, {
       headers: { Accept: "application/json" },
-      // Données toujours fraîches pendant le développement.
-      // En production, tu pourras remplacer par : next: { revalidate: 60 }
       cache: "no-store",
     });
+
     if (!response.ok) {
       console.warn(`[public-api] ${path} → HTTP ${response.status}`);
       return null;
     }
+
     return (await response.json()) as T;
   } catch (error) {
-    // Laravel éteint : le site reste en ligne, avec des listes vides
     console.error(`[public-api] ${path} injoignable`, error);
     return null;
   }
 }
 
-// ─── Adaptateurs : forme de la base → forme attendue par tes composants ───
-// Les composants du site (FighterCard, ArticleCard...) restent inchangés.
-
-// Limites indicatives, à ajuster. Elles servent à afficher "77 KG" sous la catégorie.
-const WEIGHT_KG: Record<string, number> = {
+// Correspondance entre catégories de poids et poids indicatifs en kg.
+const WEIGHT_KG: Record<WeightCategory, number> = {
   Flyweight: 57,
   Bantamweight: 61,
   Featherweight: 66,
@@ -42,9 +44,27 @@ const WEIGHT_KG: Record<string, number> = {
   Heavyweight: 105,
 };
 
-// Le dashboard enregistre un niveau (debutant → professionnel),
-// la page /fighters filtre sur 3 niveaux. Cette correspondance est un choix
-// d'affichage : modifie-la ici si ton père préfère un autre découpage.
+const WEIGHT_CATEGORIES: WeightCategory[] = [
+  "Flyweight",
+  "Bantamweight",
+  "Featherweight",
+  "Lightweight",
+  "Welterweight",
+  "Middleweight",
+  "Light Heavyweight",
+  "Heavyweight",
+];
+
+function toWeightCategory(value: string | null): WeightCategory {
+  if (value && WEIGHT_CATEGORIES.includes(value as WeightCategory)) {
+    return value as WeightCategory;
+  }
+
+  return "Flyweight";
+}
+
+// Correspondance entre le niveau enregistré dans Laravel
+// et le niveau affiché publiquement.
 function toTier(niveau: string | null): FighterTier {
   if (niveau === "professionnel") return "Professionnel";
   if (niveau === "avance") return "Semi-Pro";
@@ -52,15 +72,17 @@ function toTier(niveau: string | null): FighterTier {
 }
 
 export function toFighter(f: FighterApi): Fighter {
+  const weightCategory = toWeightCategory(f.weight_category ?? null);
+
   return {
-    id: f.id,
-    slug: f.id, // l'URL du profil utilise l'identifiant
+    id: String(f.id),
+    slug: String(f.id),
     fullName: `${f.prenom} ${f.nom}`.trim(),
     nickname: f.surnom || undefined,
     discipline: "MMA",
-    weightCategory: f.weight_category ?? "À définir",
-    weightKg: f.weight_category ? (WEIGHT_KG[f.weight_category] ?? 0) : 0,
-    tier: toTier(f.niveau),
+    weightCategory,
+    weightKg: WEIGHT_KG[weightCategory],
+    tier: toTier(f.niveau ?? null),
     record: {
       wins: Number(f.victoire) || 0,
       losses: Number(f.defaite) || 0,
@@ -70,7 +92,6 @@ export function toFighter(f: FighterApi): Fighter {
     },
     bio: f.bio || f.apropos || "",
     fightingStyle: f.style_de_combat || "",
-    // Une réalisation par ligne dans le champ "palmarès"
     achievements: (f.palmares ?? "")
       .split("\n")
       .map((line) => line.trim())
@@ -82,7 +103,12 @@ export function toFighter(f: FighterApi): Fighter {
 
 function longDate(iso: string | null): string {
   if (!iso) return "";
-  return new Date(iso).toLocaleDateString("fr-FR", {
+
+  const date = new Date(iso);
+
+  if (Number.isNaN(date.getTime())) return "";
+
+  return date.toLocaleDateString("fr-FR", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -90,29 +116,36 @@ function longDate(iso: string | null): string {
   });
 }
 
+// La base ne stockant pas encore de catégorie,
+// on utilise provisoirement "Club".
 export function toArticle(a: ArticleApi): Article {
-  // Une ligne vide dans le texte = un nouveau paragraphe
-  const paragraphs = a.contenu
+  const paragraphs = (a.contenu ?? "")
     .split(/\n\s*\n/)
-    .map((p) => p.trim())
+    .map((paragraph) => paragraph.trim())
     .filter(Boolean);
+
   const flat = paragraphs.join(" ");
 
+  const category: ArticleCategory = "Club";
+
   return {
-    id: a.id,
-    slug: a.id,
+    id: String(a.id),
+    slug: String(a.id),
     title: a.titre,
-    category: "Actualité", // la base ne stocke pas de catégorie
-    date: longDate(a.date_publication ?? a.created_at),
-    excerpt: flat.length > 160 ? `${flat.slice(0, 157).trimEnd()}…` : flat,
+    category,
+    date: longDate(a.date_publication ?? a.created_at ?? null),
+    excerpt:
+      flat.length > 160
+        ? `${flat.slice(0, 157).trimEnd()}…`
+        : flat,
     content: paragraphs,
     photos: (a.photos ?? [])
-      .map((p) => p.url)
+      .map((photo) => photo.url)
       .filter((url): url is string => Boolean(url)),
   };
 }
 
-// ─── Fonctions à appeler depuis les pages ───
+// Fonctions utilisées par les pages du site.
 
 export async function getFighters(): Promise<Fighter[]> {
   const payload = await fetchJson<ApiList<FighterApi>>("/fighters");
@@ -120,10 +153,12 @@ export async function getFighters(): Promise<Fighter[]> {
 }
 
 export async function getFighter(id: string): Promise<Fighter | null> {
-  const payload = await fetchJson<FighterApi | { data: FighterApi }>(
-    `/fighters/${encodeURIComponent(id)}`,
-  );
+  const payload = await fetchJson<
+    FighterApi | { data: FighterApi }
+  >(`/fighters/${encodeURIComponent(id)}`);
+
   if (!payload) return null;
+
   return toFighter("data" in payload ? payload.data : payload);
 }
 
@@ -133,9 +168,11 @@ export async function getArticles(): Promise<Article[]> {
 }
 
 export async function getArticle(id: string): Promise<Article | null> {
-  const payload = await fetchJson<ArticleApi | { data: ArticleApi }>(
-    `/articles/${encodeURIComponent(id)}`,
-  );
+  const payload = await fetchJson<
+    ArticleApi | { data: ArticleApi }
+  >(`/articles/${encodeURIComponent(id)}`);
+
   if (!payload) return null;
+
   return toArticle("data" in payload ? payload.data : payload);
 }
