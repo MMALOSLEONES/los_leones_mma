@@ -24,7 +24,7 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.5.5",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
+    "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.35",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
