@@ -53,7 +53,7 @@ export default function WhatsAppButton({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contacter Los Leones sur WhatsApp"
-        className={`fixed bottom-20 right-20 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg transition-transform duration-300 hover:scale-110 ${className}`}
+        className={`fixed bottom-6 right-6 z-50 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg transition-transform duration-300 hover:scale-110 ${className}`}
       >
         <WhatsAppIcon size={80} />
       </a>
