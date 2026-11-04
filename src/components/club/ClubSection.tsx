@@ -1,7 +1,11 @@
+import Image from "next/image";
+
 type ClubSectionProps = {
   eyebrow: string;
   title: string;
   paragraphs: string[];
+  imageSrc: string; // <-- Nouvelle prop obligatoire
+  imageAlt?: string; // <-- Nouvelle prop optionnelle pour le SEO/Accessibilité
   reverse?: boolean;
 };
 
@@ -9,6 +13,8 @@ export default function ClubSection({
   eyebrow,
   title,
   paragraphs,
+  imageSrc,
+  imageAlt = "",
   reverse = false,
 }: ClubSectionProps) {
   return (
@@ -19,7 +25,7 @@ export default function ClubSection({
         }`}
       >
         <div>
-          <p className="text-xs font-semibold tracking-[0.3em] text-orange-500">
+          <p className="text-xs font-semibold tracking-[0.3em] text-orange-500 uppercase">
             {eyebrow}
           </p>
           <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
@@ -34,8 +40,17 @@ export default function ClubSection({
           </div>
         </div>
 
-        {/* Placeholder image éditoriale */}
-        <div className="aspect-[4/5] w-full rounded-md bg-[linear-gradient(160deg,#1a1a1a,#0a0a0a)]" />
+        {/* Conteneur d'image mis à jour */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-neutral-900">
+          <Image
+            src={imageSrc}
+            alt={imageAlt || title}
+            fill
+            sizes="(max-w: 1024px) 100vw, 50vw"
+            className="object-cover"
+            priority={!reverse} // Donne la priorité de chargement à la première image (Histoire)
+          />
+        </div>
       </div>
     </section>
   );
