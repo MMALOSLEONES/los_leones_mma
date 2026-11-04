@@ -78,7 +78,7 @@ export default async function ContactInfo() {
         </div>
       </div>
 
-      <div className="mt-10">
+      {/* <div className="mt-10">
         <p className="text-xs font-semibold tracking-widest text-neutral-500">
           {t("availability")}
         </p>
@@ -97,7 +97,7 @@ export default async function ContactInfo() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="mt-10 flex flex-col gap-3 sm:flex-row">
         <Button href={`mailto:${contactInfo.email}`}>{t("contactUs")}</Button>

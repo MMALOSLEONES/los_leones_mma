@@ -23,7 +23,7 @@ export const contactInfo = {
   city: "Dakar, Sénégal",
   phone: "+221 77 275 74 10",
   whatsappNumber: "+34611340596", // format international sans le +, pour le lien wa.me
-  email: "senegalsport@gmail.com",
+  email: "senegalsport@live.fr",
 };
 
 export const socialLinks = [
