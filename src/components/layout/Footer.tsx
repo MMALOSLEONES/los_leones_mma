@@ -1,16 +1,23 @@
 import Link from "next/link";
 import { footerLinks, contactInfo, socialLinks } from "@/data/site";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import Image from "next/image";
 
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-black">
       <div className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Logo + adresse */}
           <div>
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full border border-white/40" />
+              <Image
+                src="/images/footer.png"
+                alt="Los Leones MMA"
+                width={65}
+                height={65}
+                className="object-contain"
+              />
+
               <div>
                 <p className="text-sm font-bold tracking-wide text-white">
                   LOS LEONES
@@ -20,6 +27,7 @@ export default function Footer() {
                 </p>
               </div>
             </div>
+
             <p className="mt-4 text-sm text-neutral-400">
               {contactInfo.address}
             </p>
@@ -52,12 +60,18 @@ export default function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-neutral-300">
               <li>{contactInfo.city}</li>
               <li>
-                <a href={`tel:${contactInfo.phone}`} className="hover:text-orange-500">
+                <a
+                  href={`tel:${contactInfo.phone}`}
+                  className="hover:text-orange-500"
+                >
                   {contactInfo.phone}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${contactInfo.email}`} className="hover:text-orange-500">
+                <a
+                  href={`mailto:${contactInfo.email}`}
+                  className="hover:text-orange-500"
+                >
                   {contactInfo.email}
                 </a>
               </li>
