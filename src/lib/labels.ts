@@ -39,6 +39,7 @@ export const FIGHTER_LEVELS = [
 ];
 
 export const WEIGHT_CATEGORIES = [
+  "Strawweight",
   "Flyweight",
   "Bantamweight",
   "Featherweight",

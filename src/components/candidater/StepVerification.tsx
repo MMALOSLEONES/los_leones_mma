@@ -1,4 +1,5 @@
 import type { ApplicationFormData } from "@/components/types/application";
+import { useTranslations } from "next-intl";
 
 type Props = {
   data: ApplicationFormData;
@@ -18,21 +19,15 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function SectionHeader({ title, onModify }: { title: string; onModify: () => void }) {
+function SectionHeader({ title, onModify, ctaText }: { title: string; onModify: () => void; ctaText: string }) {
   return (
     <div className="mt-8 flex items-center justify-between">
       <h3 className="text-xs font-bold tracking-widest text-orange-500">{title}</h3>
       <button type="button" onClick={onModify} className="text-xs font-semibold text-neutral-400 hover:text-white">
-        MODIFIER
+        {ctaText}
       </button>
     </div>
   );
-}
-
-function competitionsText(d: ApplicationFormData) {
-  if (d.aExperienceCombat !== true) return "—";
-  if (d.aFaitCompetitions !== true) return "Aucune";
-  return `${d.nombreCombats} combat(s) · ${d.victoires || 0}V / ${d.defaites || 0}D / ${d.nuls || 0}N · ${d.kos || 0} KO · ${d.soumissions || 0} soum.`;
 }
 
 export default function StepVerification({
@@ -43,38 +38,53 @@ export default function StepVerification({
   onSubmit,
   submitting = false,
 }: Props) {
-  // 2000-01-31 → 31/01/2000 (sans passer par Date, pour éviter les décalages de fuseau)
+  const t = useTranslations("StepVerification");
+
   const birth = data.dateNaissance.split("-").reverse().join("/");
+
+  const competitionsText = (d: ApplicationFormData) => {
+    if (d.aExperienceCombat !== true) return "—";
+    if (d.aFaitCompetitions !== true) return t("aucune");
+    return t("competitionsFormat", {
+      combats: d.nombreCombats,
+      victoires: d.victoires || 0,
+      defaites: d.defaites || 0,
+      nuls: d.nuls || 0,
+      kos: d.kos || 0,
+      soumissions: d.soumissions || 0,
+    });
+  };
 
   return (
     <div>
-      <h2 className="text-2xl font-extrabold text-white">04 — VÉRIFICATION</h2>
+      <h2 className="text-2xl font-extrabold text-white">{t("title")}</h2>
       <p className="mt-2 text-sm text-neutral-400">
-        Vérifie tes informations avant d&apos;envoyer ta candidature.
+        {t("description")}
       </p>
 
-      <SectionHeader title="INFORMATIONS" onModify={() => onGoToStep(1)} />
-      <SummaryRow label="NOM COMPLET" value={`${data.prenom} ${data.nom}`} />
-      <SummaryRow label="NAISSANCE" value={birth} />
-      <SummaryRow label="TÉLÉPHONE" value={data.telephone} />
-      <SummaryRow label="EMAIL" value={data.email} />
+      <SectionHeader title={t("sections.informations")} onModify={() => onGoToStep(1)} ctaText={t("modifier")} />
+      <SummaryRow label={t("labels.nomComplet")} value={`${data.prenom} ${data.nom}`} />
+      <SummaryRow label={t("labels.naissance")} value={birth} />
+      <SummaryRow label={t("labels.telephone")} value={data.telephone} />
+      <SummaryRow label={t("labels.email")} value={data.email} />
+      <SummaryRow label={t("labels.poids")} value={data.poidsKg ? `${data.poidsKg} kg` : ""} />
       <SummaryRow
-        label="VILLE"
+        label={t("labels.ville")}
         value={[data.ville, data.quartier].filter(Boolean).join(" — ")}
       />
 
-      <SectionHeader title="PROFIL SPORTIF" onModify={() => onGoToStep(2)} />
-      <SummaryRow label="SPORT DE COMBAT" value={data.aExperienceCombat ? "Oui" : "Non"} />
+      <SectionHeader title={t("sections.profilSportif")} onModify={() => onGoToStep(2)} ctaText={t("modifier")} />
+      <SummaryRow label={t("labels.sportCombat")} value={data.aExperienceCombat ? t("oui") : t("non")} />
       {data.aExperienceCombat && (
         <>
-          <SummaryRow label="NIVEAU" value={data.niveau} />
-          <SummaryRow label="COMPÉTITIONS" value={competitionsText(data)} />
+          <SummaryRow label={t("labels.niveau")} value={data.niveau} />
+          <SummaryRow label={t("labels.competitions")} value={competitionsText(data)} />
         </>
       )}
 
-      <SectionHeader title="PHOTO" onModify={() => onGoToStep(3)} />
-      <SummaryRow label="FICHIER" value={data.photo?.name ?? ""} />
-      <SummaryRow label="SOURCE" value={data.commentConnu} />
+      <SectionHeader title={t("sections.photo")} onModify={() => onGoToStep(3)} ctaText={t("modifier")} />
+      <SummaryRow label={t("labels.fichier")} value={data.photo?.name ?? ""} />
+      <SummaryRow label={t("labels.source")} value={data.commentConnu} />
 
       <label className="mt-8 flex items-start gap-3 text-sm text-neutral-400">
         <input
@@ -83,8 +93,7 @@ export default function StepVerification({
           onChange={(e) => update({ consentAccepted: e.target.checked })}
           className="mt-1 h-4 w-4 accent-orange-500"
         />
-        J&apos;accepte que Los Leones utilise les informations fournies afin
-        d&apos;étudier ma candidature.
+        {t("consentement")}
       </label>
 
       <div className="mt-10 flex justify-between border-t border-white/10 pt-6">
@@ -94,7 +103,7 @@ export default function StepVerification({
           disabled={submitting}
           className="rounded-md border border-white/20 px-6 py-3 text-xs font-bold tracking-widest text-white hover:border-white/40 disabled:opacity-40"
         >
-          ‹ RETOUR
+          {t("retour")}
         </button>
         <button
           type="button"
@@ -102,7 +111,7 @@ export default function StepVerification({
           disabled={!data.consentAccepted || submitting}
           className="rounded-md bg-orange-500 px-6 py-3 text-xs font-bold tracking-widest text-black transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {submitting ? "ENVOI EN COURS..." : "ENVOYER MA CANDIDATURE"}
+          {submitting ? t("envoiEnCours") : t("envoyer")}
         </button>
       </div>
     </div>

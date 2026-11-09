@@ -1,4 +1,5 @@
 export type WeightCategory =
+  | "Strawweight"
   | "Flyweight"
   | "Bantamweight"
   | "Featherweight"

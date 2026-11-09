@@ -12,7 +12,7 @@ type FormFieldProps = {
   error?: string | null;
   min?: number | string;
   max?: number | string;
-  inputMode?: "numeric" | "tel" | "text" | "email";
+  inputMode?: "numeric" | "tel" | "text" | "email" | "decimal";
 };
 
 export default function FormField({

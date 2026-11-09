@@ -32,17 +32,17 @@ async function fetchJson<T>(path: string): Promise<T | null> {
   }
 }
 
-// Correspondance entre catégories de poids et poids indicatifs en kg.
-const WEIGHT_KG: Record<WeightCategory, number> = {
-  Flyweight: 57,
-  Bantamweight: 61,
-  Featherweight: 66,
-  Lightweight: 70,
-  Welterweight: 77,
-  Middleweight: 84,
-  "Light Heavyweight": 93,
-  Heavyweight: 105,
-};
+// // Correspondance entre catégories de poids et poids indicatifs en kg.
+// const WEIGHT_KG: Record<WeightCategory, number> = {
+//   Flyweight: 57,
+//   Bantamweight: 61,
+//   Featherweight: 66,
+//   Lightweight: 70,
+//   Welterweight: 77,
+//   Middleweight: 84,
+//   "Light Heavyweight": 93,
+//   Heavyweight: 105,
+// };
 
 const WEIGHT_CATEGORIES: WeightCategory[] = [
   "Flyweight",
@@ -81,7 +81,7 @@ export function toFighter(f: FighterApi): Fighter {
     nickname: f.surnom || undefined,
     discipline: "MMA",
     weightCategory,
-    weightKg: WEIGHT_KG[weightCategory],
+    weightKg: f.limite_categorie_kg ?? 0,
     tier: toTier(f.niveau ?? null),
     record: {
       wins: Number(f.victoire) || 0,

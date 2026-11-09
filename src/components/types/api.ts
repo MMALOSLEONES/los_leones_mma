@@ -35,6 +35,8 @@ export interface DemandeApi {
   has_photo: boolean;
   status: string;
   created_at: string | null;
+  poids_kg: number | null;
+  categorie_estimee: string | null;
 }
 
 export interface FighterApi {
@@ -58,6 +60,8 @@ export interface FighterApi {
   photo: string | null;
   photo_url: string | null;
   is_active: boolean;
+  poids_kg: number | null;
+  limite_categorie_kg: number | null;
 }
 
 export interface ArticlePhotoApi {

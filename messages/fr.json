@@ -242,26 +242,88 @@
     "read": "LIRE L'ARTICLE →"
   },
   "ContactHero": {
-  "eyebrow": "CONTACT",
-  "title": "PARLONS COMBAT",
-  "description": "Fighters, promoteurs, sponsors ou médias — l'équipe Los Leones vous répond."
-},
-"ContactInfo": {
-  "title": "COORDONNÉES",
-  "address": "ADRESSE",
-  "phone": "TÉLÉPHONE",
-  "availability": "DISPONIBILITÉS",
-  "contactUs": "NOUS CONTACTER",
-  "join": "REJOINDRE LOS LEONES",
-  "social": "RÉSEAUX",
-  "schedule": {
-    "weekdays": { "day": "Lundi — Vendredi", "hours": "06:00 — 09:00 / 17:00 — 21:30" },
-    "saturday": { "day": "Samedi", "hours": "09:00 — 14:00" },
-    "sunday": { "day": "Dimanche", "hours": "Repos actif — sur rendez-vous" }
+    "eyebrow": "CONTACT",
+    "title": "PARLONS COMBAT",
+    "description": "Fighters, promoteurs, sponsors ou médias — l'équipe Los Leones vous répond."
+  },
+  "ContactInfo": {
+    "title": "COORDONNÉES",
+    "address": "ADRESSE",
+    "phone": "TÉLÉPHONE",
+    "availability": "DISPONIBILITÉS",
+    "contactUs": "NOUS CONTACTER",
+    "join": "REJOINDRE LOS LEONES",
+    "social": "RÉSEAUX",
+    "schedule": {
+      "weekdays": {
+        "day": "Lundi — Vendredi",
+        "hours": "06:00 — 09:00 / 17:00 — 21:30"
+      },
+      "saturday": { "day": "Samedi", "hours": "09:00 — 14:00" },
+      "sunday": { "day": "Dimanche", "hours": "Repos actif — sur rendez-vous" }
+    }
+  },
+  "ContactMap": {
+    "city": "DAKAR, SÉNÉGAL",
+    "comingSoon": "CARTE À VENIR"
+  },
+  "StepProfilSportif": {
+    "title": "02 — PROFIL SPORTIF",
+    "poids": "Poids (kg)",
+    "poidsErreurFormat": "Le format du poids est invalide.",
+    "poidsErreurPlage": "Le poids doit être compris entre 40 et 200 kg.",
+    "questionPratique": "PRATIQUEZ-VOUS DÉJÀ UN SPORT DE COMBAT ?",
+    "oui": "OUI",
+    "non": "NON",
+    "labelNiveau": "NIVEAU",
+    "questionCompetitions": "AVEZ-VOUS DÉJÀ PARTICIPÉ À DES COMPÉTITIONS ?",
+    "retour": "‹ RETOUR",
+    "continuer": "CONTINUER",
+    "niveaux": {
+      "debutant": "Débutant",
+      "intermediaire": "Intermédiaire",
+      "avance": "Avancé",
+      "professionnel": "Professionnel"
+    },
+    "fields": {
+      "combats": "Combats",
+      "victoires": "Victoires",
+      "defaites": "Défaites",
+      "nuls": "Nuls",
+      "kos": "KO",
+      "soumissions": "Soumissions"
+    }
+  },
+   "StepVerification": {
+    "title": "04 — VÉRIFICATION",
+    "description": "Vérifie tes informations avant d'envoyer ta candidature.",
+    "modifier": "MODIFIER",
+    "oui": "Oui",
+    "non": "Non",
+    "aucune": "Aucune",
+    "retour": "‹ RETOUR",
+    "envoyer": "ENVOYER MA CANDIDATURE",
+    "envoiEnCours": "ENVOI EN COURS...",
+    "consentement": "J'accepte que Los Leones utilise les informations fournies afin d'étudier ma candidature.",
+    "competitionsFormat": "{combats} combat(s) · {victoires}V / {defaites}D / {nuls}N · {kos} KO · {soumissions} soum.",
+    "sections": {
+      "informations": "INFORMATIONS",
+      "profilSportif": "PROFIL SPORTIF",
+      "photo": "PHOTO"
+    },
+    "labels": {
+      "nomComplet": "NOM COMPLET",
+      "naissance": "NAISSANCE",
+      "telephone": "TÉLÉPHONE",
+      "email": "EMAIL",
+      "poids": "POIDS",
+      "ville": "VILLE",
+      "sportCombat": "SPORT DE COMBAT",
+      "niveau": "NIVEAU",
+      "competitions": "COMPÉTITIONS",
+      "fichier": "FICHIER",
+      "source": "SOURCE"
+    }
   }
-},
-"ContactMap": {
-  "city": "DAKAR, SÉNÉGAL",
-  "comingSoon": "CARTE À VENIR"
-}
+
 }

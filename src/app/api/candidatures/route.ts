@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { ApplicationFormData } from "@/components/types/application";
 import { normalizePhone } from "@/lib/validation";
+import { parseWeight } from "@/lib/weight";
 
 const API_URL = process.env.API_URL;
 
@@ -38,10 +39,16 @@ export async function POST(request: Request) {
   }
 
   if (!fields.consentAccepted) {
-    return NextResponse.json({ message: "Le consentement est requis." }, { status: 400 });
+    return NextResponse.json(
+      { message: "Le consentement est requis." },
+      { status: 400 },
+    );
   }
   if (!photo) {
-    return NextResponse.json({ message: "La photo est obligatoire." }, { status: 400 });
+    return NextResponse.json(
+      { message: "La photo est obligatoire." },
+      { status: 400 },
+    );
   }
 
   // On ne transmet à Laravel que les champs qu'il connaît. Le statut n'est jamais
@@ -59,6 +66,9 @@ export async function POST(request: Request) {
   set("date_naissance", fields.dateNaissance);
   set("ville", fields.ville.trim());
   set("quartier", fields.quartier.trim());
+
+  const kg = parseWeight(fields.poidsKg);
+  if (kg !== null) set("poids_kg", String(kg));
 
   set("a_experience_combat", fields.aExperienceCombat === true);
   if (fields.aExperienceCombat) {
@@ -92,7 +102,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json(
       { message: "Serveur injoignable. Réessaie dans quelques instants." },
-      { status: 502 }
+      { status: 502 },
     );
   }
 
@@ -105,9 +115,12 @@ export async function POST(request: Request) {
       : undefined;
     return NextResponse.json(
       {
-        message: firstError ?? result.message ?? "Impossible d'enregistrer la candidature.",
+        message:
+          firstError ??
+          result.message ??
+          "Impossible d'enregistrer la candidature.",
       },
-      { status: laravelResponse.status }
+      { status: laravelResponse.status },
     );
   }
 

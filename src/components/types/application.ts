@@ -27,6 +27,7 @@ export interface ApplicationFormData {
   nuls: string;
   kos: string;
   soumissions: string;
+  poidsKg: string;
 
   // Étape 3 — Photo
   commentConnu: SourceConnaissance | "";
@@ -52,6 +53,7 @@ export const initialApplicationData: ApplicationFormData = {
   defaites: "",
   nuls: "",
   kos: "",
+  poidsKg: "",
   soumissions: "",
   commentConnu: "",
   photo: null,

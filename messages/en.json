@@ -266,5 +266,62 @@
   "ContactMap": {
     "city": "DAKAR, SENEGAL",
     "comingSoon": "MAP COMING SOON"
+  },
+  "StepProfilSportif": {
+    "title": "02 — ATHLETIC PROFILE",
+    "poids": "Weight (kg)",
+    "poidsErreurFormat": "Enter your weight in kg (e.g. 77 or 77.5).",
+    "poidsErreurPlage": "Weight must be between 40 and 200 kg.",
+    "questionPratique": "DO YOU ALREADY PRACTICE A COMBAT SPORT?",
+    "oui": "YES",
+    "non": "NO",
+    "labelNiveau": "LEVEL",
+    "questionCompetitions": "HAVE YOU EVER COMPETED?",
+    "retour": "‹ BACK",
+    "continuer": "CONTINUE",
+    "niveaux": {
+      "debutant": "Beginner",
+      "intermediaire": "Intermediate",
+      "avance": "Advanced",
+      "professionnel": "Professional"
+    },
+    "fields": {
+      "combats": "Fights",
+      "victoires": "Wins",
+      "defaites": "Losses",
+      "nuls": "Draws",
+      "kos": "KOs",
+      "soumissions": "Submissions"
+    }
+  },
+  "StepVerification": {
+    "title": "04 — VERIFICATION",
+    "description": "Review your information before submitting your application.",
+    "modifier": "EDIT",
+    "oui": "Yes",
+    "non": "No",
+    "aucune": "None",
+    "retour": "‹ BACK",
+    "envoyer": "SUBMIT MY APPLICATION",
+    "envoiEnCours": "SUBMITTING...",
+    "consentement": "I agree that Los Leones may use the information provided to process my application.",
+    "competitionsFormat": "{combats} fight(s) · {victoires}W / {defaites}L / {nuls}D · {kos} KO · {soumissions} sub.",
+    "sections": {
+      "informations": "INFORMATION",
+      "profilSportif": "ATHLETIC PROFILE",
+      "photo": "PHOTO"
+    },
+    "labels": {
+      "nomComplet": "FULL NAME",
+      "naissance": "DATE OF BIRTH",
+      "telephone": "PHONE",
+      "email": "EMAIL",
+      "ville": "CITY",
+      "sportCombat": "COMBAT SPORT",
+      "niveau": "LEVEL",
+      "competitions": "COMPETITIONS",
+      "fichier": "FILE",
+      "source": "SOURCE"
+    }
   }
 }

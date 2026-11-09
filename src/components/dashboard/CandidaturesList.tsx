@@ -163,6 +163,14 @@ export default function CandidaturesList({
                       label="NAISSANCE"
                       value={formatDate(d.date_naissance)}
                     />
+                    <Detail
+                      label="POIDS"
+                      value={d.poids_kg != null ? `${d.poids_kg} kg` : null}
+                    />
+                    <Detail
+                      label="CATÉGORIE ESTIMÉE"
+                      value={d.categorie_estimee}
+                    />
                     <Detail label="EXPÉRIENCE" value={experienceText(d)} />
                     <Detail label="QUARTIER" value={d.quartier} />
                     <Detail label="COMPÉTITIONS" value={competitionsText(d)} />
