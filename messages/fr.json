@@ -324,6 +324,24 @@
       "fichier": "FICHIER",
       "source": "SOURCE"
     }
+  }, "categories": {
+    "Tous": "TOUS",
+    "Strawweight": "Poids pailles",
+    "Flyweight": "Poids mouches",
+    "Bantamweight": "Poids coqs",
+    "Featherweight": "Poids plumes",
+    "Lightweight": "Poids légers",
+    "Welterweight": "Poids mi-moyens",
+    "Middleweight": "Poids moyens",
+    "Light Heavyweight": "Poids mi-lourds",
+    "Heavyweight": "Poids lourds"
+  },
+  "fighters": {
+    "title": "FIGHTERS",
+    "subtitle": "Les combattants représentés par l'agence.",
+    "no_results": "Aucun fighter ne correspond à ces filtres.",
+    "soon": "Le roster arrive bientôt."
   }
+  
 
 }

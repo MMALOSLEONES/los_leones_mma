@@ -1,49 +1,58 @@
+"use client";
+
+import { useTranslations } from "next-intl"; // S'adapte selon votre package (ex: next-intl)
 import Link from "next/link";
-import { Fighter } from "@/components/types/fighter";
+import type { Fighter } from "@/components/types/fighter";
 
 export default function FighterCard({ fighter }: { fighter: Fighter }) {
+  const tCat = useTranslations("categories");
+
   return (
-    <Link
-      href={`/fighters/${fighter.slug}`}
-      className="group block overflow-hidden rounded-md bg-neutral-900"
-    >
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[linear-gradient(160deg,#3a3a3a,#0a0a0a)]">
-        {fighter.photoUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
+    <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900/50 transition hover:border-white/20">
+      {/* Conteneur de l'image / placeholder */}
+      <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-orange-500/20 to-neutral-800 flex items-center justify-center">
+        {fighter.photoUrl ? (
           <img
             src={fighter.photoUrl}
             alt={fighter.fullName}
-            className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
+        ) : (
+          <div className="text-6xl text-orange-500/40">?</div>
         )}
-        <span className="absolute left-3 top-3 rounded bg-orange-500 px-2 py-1 text-[10px] font-bold tracking-widest text-black">
-          {fighter.discipline}
-        </span>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition duration-300 group-hover:scale-105" />
       </div>
 
-      <div className="p-4">
-        {fighter.nickname && (
-          <p className="text-xs font-semibold italic tracking-wide text-orange-500">
-            &quot;{fighter.nickname}&quot;
-          </p>
-        )}
-        <h3 className="mt-1 text-lg font-bold text-white">
+      {/* Informations du combattant */}
+      <div className="p-5">
+        <h3 className="text-lg font-bold text-white tracking-wide">
           {fighter.fullName}
         </h3>
-        <p className="mt-1 text-sm text-neutral-400">
-          {fighter.weightCategory} — {fighter.weightKg} KG
+        
+        {/* Traduction dynamique de la catégorie de poids */}
+        <p className="mt-1 text-xs font-medium text-neutral-400">
+          {tCat(fighter.weightCategory)} — {fighter.weightKg} KG
         </p>
 
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm font-semibold text-neutral-200">
+        {/* Fiche de statistiques rapides (Record) */}
+        <div className="mt-4 flex items-center gap-4 text-sm font-semibold text-white">
+          <span>
             {fighter.record.wins}-{fighter.record.losses}-{fighter.record.draws}
-          </p>
-          <span className="text-xs font-bold tracking-widest text-orange-500 group-hover:text-orange-400">
-            VOIR LE PROFIL »
+          </span>
+          <span className="text-xs font-normal text-neutral-500">
+            ({fighter.tier})
           </span>
         </div>
+
+        {/* Bouton de redirection vers le profil */}
+        <div className="mt-5 flex justify-end">
+          <Link
+            href={`/fighters/${fighter.slug}`}
+            className="text-xs font-bold uppercase tracking-wider text-orange-500 hover:text-orange-400 flex items-center gap-1 transition"
+          >
+            Voir le profil <span className="text-sm">»</span>
+          </Link>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }

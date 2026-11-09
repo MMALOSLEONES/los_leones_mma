@@ -323,5 +323,22 @@
       "fichier": "FILE",
       "source": "SOURCE"
     }
+  },  "categories": {
+    "Tous": "ALL",
+    "Strawweight": "Strawweight",
+    "Flyweight": "Flyweight",
+    "Bantamweight": "Bantamweight",
+    "Featherweight": "Featherweight",
+    "Lightweight": "Lightweight",
+    "Welterweight": "Welterweight",
+    "Middleweight": "Middleweight",
+    "Light Heavyweight": "Light Heavyweight",
+    "Heavyweight": "Heavyweight"
+  },
+  "fighters": {
+    "title": "FIGHTERS",
+    "subtitle": "Fighters represented by the agency.",
+    "no_results": "No fighters match these filters.",
+    "soon": "The roster is coming soon."
   }
 }

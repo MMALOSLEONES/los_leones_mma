@@ -21,6 +21,7 @@ type FighterFiltersProps = {
   selectedTier: FighterTier | "Tous";
   onTierChange: (value: FighterTier | "Tous") => void;
   resultCount: number;
+  tCat: (key: string) => string; // On ajoute la fonction de traduction dans les types des Props
 };
 
 function FilterPill({
@@ -52,6 +53,7 @@ export default function FighterFilters({
   selectedTier,
   onTierChange,
   resultCount,
+  tCat, // On récupère tCat ici
 }: FighterFiltersProps) {
   return (
     <div className="border-b border-white/10 pb-8">
@@ -64,7 +66,7 @@ export default function FighterFilters({
             active={selectedCategory === "Tous"}
             onClick={() => onCategoryChange("Tous")}
           >
-            TOUS
+            {tCat("Tous").toUpperCase()} {/* Traduit "TOUS" selon la langue */}
           </FilterPill>
           {categories.map((category) => (
             <FilterPill
@@ -72,7 +74,7 @@ export default function FighterFilters({
               active={selectedCategory === category}
               onClick={() => onCategoryChange(category)}
             >
-              {category.toUpperCase()}
+              {tCat(category).toUpperCase()} {/* Traduit la catégorie (ex: "Poids légers") et la met en majuscules */}
             </FilterPill>
           ))}
         </div>

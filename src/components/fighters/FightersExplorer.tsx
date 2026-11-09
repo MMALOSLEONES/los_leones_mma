@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl"; // S'adapte selon votre package (ex: next-intl)
 import type {
   Fighter,
   WeightCategory,
@@ -9,9 +10,10 @@ import type {
 import FighterFilters from "@/components/fighters/FighterFilters";
 import FighterCard from "@/components/fighters/FighterCard";
 
-// Ancienne logique de la page /fighters : les filtres ont besoin d'état (useState),
-// donc ils vivent dans un composant client. La page, elle, charge les données côté serveur.
 export default function FightersExplorer({ fighters }: { fighters: Fighter[] }) {
+  const t = useTranslations("fighters");
+  const tCat = useTranslations("categories");
+
   const [category, setCategory] = useState<WeightCategory | "Tous">("Tous");
   const [tier, setTier] = useState<FighterTier | "Tous">("Tous");
 
@@ -30,31 +32,33 @@ export default function FightersExplorer({ fighters }: { fighters: Fighter[] }) 
         LOS LEONES
       </p>
       <h1 className="mt-3 text-4xl font-extrabold text-white sm:text-5xl">
-        FIGHTERS
+        {t("title")}
       </h1>
       <p className="mt-3 max-w-xl text-neutral-400">
-        Les combattants représentés par l&apos;agence.
+        {t("subtitle")}
       </p>
 
       {fighters.length === 0 ? (
         <p className="mt-16 text-center text-neutral-500">
-          Le roster arrive bientôt.
+          {t("soon")}
         </p>
       ) : (
         <>
           <div className="mt-10">
+            {/* On transmet ici la fonction tCat pour que les boutons s'affichent en français */}
             <FighterFilters
               selectedCategory={category}
               onCategoryChange={setCategory}
               selectedTier={tier}
               onTierChange={setTier}
               resultCount={filteredFighters.length}
+              tCat={tCat} 
             />
           </div>
 
           {filteredFighters.length === 0 ? (
             <p className="mt-16 text-center text-neutral-500">
-              Aucun fighter ne correspond à ces filtres.
+              {t("no_results")}
             </p>
           ) : (
             <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
