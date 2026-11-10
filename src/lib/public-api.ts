@@ -32,7 +32,7 @@ async function fetchJson<T>(path: string): Promise<T | null> {
   }
 }
 
-// // Correspondance entre catégories de poids et poids indicatifs en kg.
+// Correspondance entre catégories de poids et poids indicatifs en kg.
 // const WEIGHT_KG: Record<WeightCategory, number> = {
 //   Flyweight: 57,
 //   Bantamweight: 61,
@@ -97,6 +97,12 @@ export function toFighter(f: FighterApi): Fighter {
       .map((line) => line.trim())
       .filter(Boolean),
     photoUrl: f.photo_url ?? undefined,
+    photos: (f.media ?? [])
+      .filter((m) => m.type === "photo" && m.url)
+      .map((m) => m.url as string),
+    videos: (f.media ?? [])
+      .filter((m) => m.type === "video" && m.url)
+      .map((m) => ({ id: m.id, url: m.url as string })),
     instagram: f.reseaux || undefined,
   };
 }

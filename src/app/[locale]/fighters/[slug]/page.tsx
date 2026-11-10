@@ -1,10 +1,13 @@
+
 import { notFound } from "next/navigation";
 import { getFighter, getFighters } from "@/lib/public-api";
 import FighterHero from "@/components/fighters/FighterHero";
 import FighterStats from "@/components/fighters/FighterStats";
 import FighterBio from "@/components/fighters/FighterBio";
 import FighterAchievements from "@/components/fighters/FighterAchievements";
+import FighterGallery from "@/components/fighters/FighterGallery";
 import OtherFighters from "@/components/fighters/OtherFighters";
+import { getTranslations } from "next-intl/server";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -22,6 +25,8 @@ export default async function FighterProfilePage({ params }: PageProps) {
     notFound();
   }
 
+  const t = await getTranslations("FighterPage");
+
   const otherFighters = allFighters
     .filter((f) => f.id !== fighter.id)
     .slice(0, 3);
@@ -29,6 +34,7 @@ export default async function FighterProfilePage({ params }: PageProps) {
   return (
     <main>
       <FighterHero fighter={fighter} />
+
       <FighterStats fighter={fighter} />
 
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
@@ -37,6 +43,12 @@ export default async function FighterProfilePage({ params }: PageProps) {
           <FighterAchievements fighter={fighter} />
         </div>
       </section>
+
+      <FighterGallery
+        fighter={fighter}
+        photosTitle={t("gallery")}
+        videosTitle={t("videos")}
+      />
 
       <OtherFighters fighters={otherFighters} />
     </main>

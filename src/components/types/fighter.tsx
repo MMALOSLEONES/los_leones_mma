@@ -34,4 +34,6 @@ export interface Fighter {
   achievements: string[];
   photoUrl?: string;
   instagram?: string;
+  photos: string[];
+  videos: { id: string; url: string }[];
 }

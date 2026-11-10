@@ -29,9 +29,10 @@ export interface ApplicationFormData {
   soumissions: string;
   poidsKg: string;
 
-  // Étape 3 — Photo
+  // Étape 3 — Médias (Modifié pour le support multi-fichiers)
   commentConnu: SourceConnaissance | "";
-  photo: File | null;
+  photos: File[]; // Remplace 'photo: File | null' pour stocker jusqu'à 10 photos
+  videos: File[]; // Ajout pour stocker jusqu'à 5 vidéos d'entraînement/sparring
 
   // Étape 4 — Vérification
   consentAccepted: boolean;
@@ -56,6 +57,7 @@ export const initialApplicationData: ApplicationFormData = {
   poidsKg: "",
   soumissions: "",
   commentConnu: "",
-  photo: null,
+  photos: [], // Tableau vide initialisé pour les photos
+  videos: [], // Tableau vide initialisé pour les vidéos
   consentAccepted: false,
 };

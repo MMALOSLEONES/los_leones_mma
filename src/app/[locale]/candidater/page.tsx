@@ -29,14 +29,24 @@ export default function CandidaterPage() {
     setSubmitError("");
 
     try {
-      // Le fichier ne peut pas passer dans du JSON : on envoie un formulaire
-      // "multipart" avec les champs d'un côté et la photo de l'autre.
-      const { photo, ...fields } = data;
+      // 1. Déconstruction : On sépare les fichiers (photos/videos) du reste des champs texte normaux
+      const { photos, videos, ...fields } = data;
       const body = new FormData();
+      
+      // On insère l'objet texte au format JSON
       body.append("data", JSON.stringify(fields));
-      if (photo) body.append("photo", photo);
 
-      // Pas de header Content-Type : le navigateur l'ajoute avec le bon séparateur
+      // 2. On boucle sur le tableau de photos pour les ajouter au FormData (clé 'photos[]')
+      photos.forEach((photoFile, index) => {
+        body.append(`photos[${index}]`, photoFile);
+      });
+
+      // 3. On boucle sur le tableau de vidéos pour les ajouter au FormData (clé 'videos[]')
+      videos.forEach((videoFile, index) => {
+        body.append(`videos[${index}]`, videoFile);
+      });
+
+      // Pas de header Content-Type manuel : le navigateur gère les délimiteurs du FormData automatiquement
       const response = await fetch("/api/candidatures", { method: "POST", body });
       const result = await response.json().catch(() => ({}));
 
@@ -117,3 +127,4 @@ export default function CandidaterPage() {
     </main>
   );
 }
+  

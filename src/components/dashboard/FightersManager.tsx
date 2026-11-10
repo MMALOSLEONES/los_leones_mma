@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import FormField from "@/components/candidater/FormField";
@@ -12,11 +11,10 @@ import {
 } from "@/components/dashboard/fields";
 import PhotoPicker from "@/components/dashboard/PhotoPicker";
 import { adminRequest, adminUpload } from "@/lib/adminFetch";
-import { prepareImage } from "@/lib/image";
 import { FIGHTER_LEVELS, WEIGHT_CATEGORIES } from "@/lib/labels";
 import type { FighterApi } from "@/components/types/api";
 import { parseWeight } from "@/lib/weight";
-
+import FighterEditor from "@/components/dashboard/FighterEditor";
 const emptyForm = {
   prenom: "",
   nom: "",
@@ -35,9 +33,7 @@ const emptyForm = {
   poids_kg: "",
 };
 type FormState = typeof emptyForm;
-
 const toInt = (value: string) => Number.parseInt(value, 10) || 0;
-
 export default function FightersManager({
   fighters,
 }: {
@@ -50,23 +46,20 @@ export default function FightersManager({
   const [pickerKey, setPickerKey] = useState(0);
   const [saving, setSaving] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
-
   const set = (key: keyof FormState) => (value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
-
   const resetForm = () => {
     setForm(emptyForm);
     setPhoto(null);
     setPickerKey((k) => k + 1); // vide le sélecteur de photo
     setShowForm(false);
   };
-
   const create = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setError("");
-
     let created = false;
     try {
       // 1) Le fighter
@@ -93,14 +86,12 @@ export default function FightersManager({
         poids_kg: parseWeight(form.poids_kg)
       });
       created = true;
-
       // 2) Sa photo, avec l'identifiant qu'on vient de recevoir
       if (photo) {
         const fighterId = result.data?.id ?? result.id;
         if (!fighterId) throw new Error("identifiant du fighter introuvable");
-        await adminUpload(`/fighters/${fighterId}/photo`, photo);
+        await adminUpload(`/fighters/${fighterId}/photos`, photo);
       }
-
       resetForm();
       router.refresh();
     } catch (err) {
@@ -119,23 +110,6 @@ export default function FightersManager({
       setSaving(false);
     }
   };
-
-  const changePhoto = async (fighter: FighterApi, file: File) => {
-    setBusyId(fighter.id);
-    setError("");
-    try {
-      const prepared = await prepareImage(file);
-      await adminUpload(`/fighters/${fighter.id}/photo`, prepared);
-      router.refresh();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Photo impossible à envoyer.",
-      );
-    } finally {
-      setBusyId(null);
-    }
-  };
-
   const remove = async (fighter: FighterApi) => {
     if (
       !window.confirm(
@@ -154,7 +128,7 @@ export default function FightersManager({
       setBusyId(null);
     }
   };
-
+  const editingFighter = fighters.find((f) => f.id === editingId) ?? null;
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -162,19 +136,20 @@ export default function FightersManager({
           {fighters.length} fighter{fighters.length > 1 ? "s" : ""}
         </p>
         <button
-          onClick={() => (showForm ? resetForm() : setShowForm(true))}
+          onClick={() => {
+            setEditingId(null);
+            showForm ? resetForm() : setShowForm(true);
+          }}
           className={btnPrimary}
         >
           {showForm ? "ANNULER" : "AJOUTER UN FIGHTER"}
         </button>
       </div>
-
       {error && (
         <div className="mt-6 rounded-md border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
-
       {showForm && (
         <form
           onSubmit={create}
@@ -225,13 +200,11 @@ export default function FightersManager({
               placeholder="Choisir..."
             />
           </div>
-
           <PhotoPicker
             key={pickerKey}
             label="Photo"
             onChange={(files) => setPhoto(files[0] ?? null)}
           />
-
           <div>
             <p className="text-xs font-semibold tracking-widest text-neutral-400">
               RECORD
@@ -274,7 +247,6 @@ export default function FightersManager({
               />
             </div>
           </div>
-
           <TextAreaField
             label="Bio"
             rows={4}
@@ -293,7 +265,6 @@ export default function FightersManager({
             value={form.palmares}
             onChange={set("palmares")}
           />
-
           <div className="flex gap-3">
             <button
               type="submit"
@@ -313,7 +284,13 @@ export default function FightersManager({
           </div>
         </form>
       )}
-
+      {editingFighter && (
+        <FighterEditor
+          key={editingFighter.id}
+          fighter={editingFighter}
+          onClose={() => setEditingId(null)}
+        />
+      )}
       {fighters.length === 0 ? (
         <p className="mt-10 text-center text-neutral-500">
           Aucun fighter pour le moment. Ajoute le premier ou valide une
@@ -342,7 +319,7 @@ export default function FightersManager({
                     {f.prenom} {f.nom}
                     {f.surnom && (
                       <span className="ml-2 text-sm font-semibold italic text-orange-500">
-                        &quot;{f.surnom}&quot;
+                        "{f.surnom}"
                       </span>
                     )}
                     {!f.is_active && (
@@ -357,24 +334,13 @@ export default function FightersManager({
                   </p>
                 </div>
               </div>
-
               <div className="flex items-center gap-2">
-                <label
-                  className={`${btnOutline} cursor-pointer ${busyId === f.id ? "pointer-events-none opacity-40" : ""}`}
+                <button
+                  onClick={() => { setShowForm(false); setEditingId(f.id); }}
+                  className={btnOutline}
                 >
-                  {f.photo_url ? "CHANGER LA PHOTO" : "AJOUTER UNE PHOTO"}
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    className="hidden"
-                    disabled={busyId === f.id}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      e.target.value = "";
-                      if (file) changePhoto(f, file);
-                    }}
-                  />
-                </label>
+                  MODIFIER
+                </button>
                 <button
                   onClick={() => remove(f)}
                   disabled={busyId === f.id}

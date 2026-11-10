@@ -5,7 +5,8 @@ import { parseWeight } from "@/lib/weight";
 
 const API_URL = process.env.API_URL;
 
-type Fields = Omit<ApplicationFormData, "photo">;
+// On exclut les anciens champs "photo" uniques de l'interface typée
+type Fields = Omit<ApplicationFormData, "photo" | "photos" | "videos">;
 
 // Libellés du formulaire → valeurs exactes attendues par Laravel
 const NIVEAU: Record<string, string> = {
@@ -15,44 +16,61 @@ const NIVEAU: Record<string, string> = {
   Professionnel: "professionnel",
 };
 
+// Garde les correspondances inchangées
 const SOURCE: Record<string, string> = {
-  Instagram: "instagram",
-  TikTok: "tiktok",
-  Facebook: "facebook",
-  WhatsApp: "whatsapp",
-  Recommandation: "recommandation",
-  Google: "google",
-  Autre: "autre",
+  Instagram: "Instagram",
+  TikTok: "TikTok",
+  Facebook: "Facebook",
+  WhatsApp: "WhatsApp",
+  Recommandation: "Recommandation",
+  Google: "Google",
+  Autre: "Autre",
 };
 
 export async function POST(request: Request) {
   let fields: Fields;
-  let photo: File | null;
+  let photosFiles: File[] = [];
+  let videosFiles: File[] = [];
 
   try {
     const form = await request.formData();
     fields = JSON.parse(String(form.get("data")));
-    const file = form.get("photo");
-    photo = file instanceof File ? file : null;
+    
+    // Récupération dynamique des tableaux de fichiers multimédias
+    let index = 0;
+    while (form.has(`photos[${index}]`)) {
+      const file = form.get(`photos[${index}]`);
+      if (file instanceof File) photosFiles.push(file);
+      index++;
+    }
+
+    index = 0;
+    while (form.has(`videos[${index}]`)) {
+      const file = form.get(`videos[${index}]`);
+      if (file instanceof File) videosFiles.push(file);
+      index++;
+    }
   } catch {
     return NextResponse.json({ message: "Requête invalide." }, { status: 400 });
   }
 
+  // Vérification de sécurité locale
   if (!fields.consentAccepted) {
     return NextResponse.json(
       { message: "Le consentement est requis." },
       { status: 400 },
     );
   }
-  if (!photo) {
+
+  // Sécurité : Une candidature doit posséder au moins une photo
+  if (photosFiles.length === 0) {
     return NextResponse.json(
       { message: "La photo est obligatoire." },
       { status: 400 },
     );
   }
 
-  // On ne transmet à Laravel que les champs qu'il connaît. Le statut n'est jamais
-  // envoyé : Laravel décide lui-même de la valeur de départ.
+  // Préparation de l'envoi propre pour Laravel
   const out = new FormData();
   const set = (key: string, value: string | boolean | null | undefined) => {
     if (value === null || value === undefined || value === "") return;
@@ -88,13 +106,21 @@ export async function POST(request: Request) {
 
   set("comment_connu", SOURCE[fields.commentConnu]);
   set("consent_accepted", true);
-  out.append("photo", photo, photo.name);
+
+  // Injection ordonnée du lot complet de photos dans le nouveau FormData
+  photosFiles.forEach((file, idx) => {
+    out.append(`photos[${idx}]`, file, file.name);
+  });
+
+  // Injection ordonnée du lot complet de vidéos dans le nouveau FormData
+  videosFiles.forEach((file, idx) => {
+    out.append(`videos[${idx}]`, file, file.name);
+  });
 
   let laravelResponse: Response;
   try {
     laravelResponse = await fetch(`${API_URL}/candidatures`, {
       method: "POST",
-      // Pas de Content-Type ici non plus : il est ajouté avec le séparateur du multipart
       headers: { Accept: "application/json" },
       body: out,
       cache: "no-store",
@@ -109,7 +135,6 @@ export async function POST(request: Request) {
   const result = await laravelResponse.json().catch(() => ({}));
 
   if (!laravelResponse.ok) {
-    // On affiche la première erreur précise plutôt que "(and 1 more error)"
     const firstError = result.errors
       ? (Object.values(result.errors).flat()[0] as string | undefined)
       : undefined;

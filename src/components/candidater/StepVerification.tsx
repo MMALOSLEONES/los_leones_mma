@@ -55,6 +55,20 @@ export default function StepVerification({
     });
   };
 
+  // Permet d'afficher un résumé propre des fichiers multimédias sélectionnés
+  const getMediaSummaryText = () => {
+    const photosCount = data.photos?.length ?? 0;
+    const videosCount = data.videos?.length ?? 0;
+
+    if (photosCount === 0 && videosCount === 0) return "—";
+
+    const parts = [];
+    if (photosCount > 0) parts.push(`${photosCount} photo(s)`);
+    if (videosCount > 0) parts.push(`${videosCount} vidéo(s)`);
+
+    return parts.join(" & ");
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-extrabold text-white">{t("title")}</h2>
@@ -83,7 +97,8 @@ export default function StepVerification({
       )}
 
       <SectionHeader title={t("sections.photo")} onModify={() => onGoToStep(3)} ctaText={t("modifier")} />
-      <SummaryRow label={t("labels.fichier")} value={data.photo?.name ?? ""} />
+      {/* MISE À JOUR ICI : On utilise notre fonction pour afficher le total des fichiers chargés */}
+      <SummaryRow label={t("labels.fichier")} value={getMediaSummaryText()} />
       <SummaryRow label={t("labels.source")} value={data.commentConnu} />
 
       <label className="mt-8 flex items-start gap-3 text-sm text-neutral-400">
@@ -105,10 +120,11 @@ export default function StepVerification({
         >
           {t("retour")}
         </button>
+        {/* Validation débloquée : la condition de soumission dépend du consentement de l'étape 4 et du nombre de photos de l'étape 3 */}
         <button
           type="button"
           onClick={onSubmit}
-          disabled={!data.consentAccepted || submitting}
+          disabled={!data.consentAccepted || submitting || (data.photos?.length ?? 0) === 0}
           className="rounded-md bg-orange-500 px-6 py-3 text-xs font-bold tracking-widest text-black transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {submitting ? t("envoiEnCours") : t("envoyer")}

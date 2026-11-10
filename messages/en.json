@@ -340,5 +340,9 @@
     "subtitle": "Fighters represented by the agency.",
     "no_results": "No fighters match these filters.",
     "soon": "The roster is coming soon."
+  }, 
+   "FighterPage": {
+    "gallery": "Gallery",
+    "videos": "Videos"
   }
 }
