@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import FormField from "@/components/candidater/FormField";
@@ -9,16 +10,24 @@ import {
   btnOutline,
   btnDanger,
 } from "@/components/dashboard/fields";
+import FighterEditor from "@/components/dashboard/FighterEditor";
 import PhotoPicker from "@/components/dashboard/PhotoPicker";
 import { adminRequest, adminUpload } from "@/lib/adminFetch";
+import {
+  MAX_PHOTOS,
+  MAX_VIDEOS,
+  uploadFighterVideo,
+  videoFileError,
+} from "@/lib/fighterMedia";
 import { FIGHTER_LEVELS, WEIGHT_CATEGORIES } from "@/lib/labels";
-import type { FighterApi } from "@/components/types/api";
 import { parseWeight } from "@/lib/weight";
-import FighterEditor from "@/components/dashboard/FighterEditor";
+import type { FighterApi } from "@/components/types/api";
+
 const emptyForm = {
   prenom: "",
   nom: "",
   surnom: "",
+  poids_kg: "",
   weight_category: "",
   niveau: "",
   reseaux: "",
@@ -30,97 +39,218 @@ const emptyForm = {
   nul: "",
   ko: "",
   soumission: "",
-  poids_kg: "",
 };
 type FormState = typeof emptyForm;
+
 const toInt = (value: string) => Number.parseInt(value, 10) || 0;
-export default function FightersManager({
-  fighters,
+const megaOctets = (bytes: number) => `${(bytes / 1024 / 1024).toFixed(1)} Mo`;
+
+// Choix des vidéos du formulaire d'ajout (la liste reste dans le parent)
+function VideoFilesPicker({
+  files,
+  onChange,
 }: {
-  fighters: FighterApi[];
+  files: File[];
+  onChange: (files: File[]) => void;
 }) {
+  const [error, setError] = useState("");
+
+  const add = (list: File[]) => {
+    setError("");
+    const accepted: File[] = [];
+    const problems: string[] = [];
+
+    for (const file of list) {
+      if (files.length + accepted.length >= MAX_VIDEOS) {
+        problems.push(`Maximum ${MAX_VIDEOS} vidéos.`);
+        break;
+      }
+      const problem = videoFileError(file);
+      if (problem) problems.push(`${file.name} : ${problem}`);
+      else accepted.push(file);
+    }
+
+    if (accepted.length > 0) onChange([...files, ...accepted]);
+    if (problems.length > 0) setError(problems.join(" "));
+  };
+
+  return (
+    <div>
+      <p className="text-xs font-semibold tracking-widest text-neutral-400">
+        VIDÉOS ({files.length}/{MAX_VIDEOS})
+      </p>
+
+      {files.length > 0 && (
+        <ul className="mt-3 space-y-2">
+          {files.map((file, index) => (
+            <li
+              key={`${file.name}-${index}`}
+              className="flex items-center justify-between gap-3 rounded-md border border-white/10 px-3 py-2 text-sm text-neutral-300"
+            >
+              <span className="truncate">
+                {file.name} · {megaOctets(file.size)}
+              </span>
+              <button
+                type="button"
+                onClick={() => onChange(files.filter((_, i) => i !== index))}
+                className="shrink-0 text-xs font-semibold text-red-400 hover:text-red-300"
+              >
+                Retirer
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <label
+        className={`${btnOutline} mt-3 inline-block cursor-pointer ${
+          files.length >= MAX_VIDEOS ? "pointer-events-none opacity-40" : ""
+        }`}
+      >
+        AJOUTER DES VIDÉOS
+        <input
+          type="file"
+          accept="video/mp4,video/webm"
+          multiple
+          className="hidden"
+          disabled={files.length >= MAX_VIDEOS}
+          onChange={(e) => {
+            const list = Array.from(e.target.files ?? []);
+            e.target.value = "";
+            add(list);
+          }}
+        />
+      </label>
+      <p className="mt-2 text-xs text-neutral-500">
+        MP4 ou WebM, 150 Mo maximum chacune. Compresse-les avant (720p suffit).
+      </p>
+      {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
+    </div>
+  );
+}
+
+export default function FightersManager({ fighters }: { fighters: FighterApi[] }) {
   const router = useRouter();
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [photo, setPhoto] = useState<File | null>(null);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [videos, setVideos] = useState<File[]>([]);
   const [pickerKey, setPickerKey] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState("");
+  const [percent, setPercent] = useState<number | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
+
+  const editingFighter = fighters.find((f) => f.id === editingId) ?? null;
+
   const set = (key: keyof FormState) => (value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
+
   const resetForm = () => {
     setForm(emptyForm);
-    setPhoto(null);
-    setPickerKey((k) => k + 1); // vide le sélecteur de photo
+    setPhotos([]);
+    setVideos([]);
+    setPickerKey((k) => k + 1); // vide les sélecteurs de photos et de vidéos
     setShowForm(false);
   };
+
   const create = async (e: FormEvent) => {
     e.preventDefault();
-    setSaving(true);
     setError("");
-    let created = false;
-    try {
-      // 1) Le fighter
-      const result = await adminRequest<{
-        data?: { id?: string };
-        id?: string;
-      }>("/fighters", "POST", {
-        prenom: form.prenom.trim(),
-        nom: form.nom.trim(),
-        surnom: form.surnom.trim() || null,
-        weight_category: form.weight_category || null,
-        niveau: form.niveau || null,
-        reseaux: form.reseaux.trim() || null,
-        bio: form.bio.trim() || null,
-        style_de_combat: form.style_de_combat.trim() || null,
-        palmares: form.palmares.trim() || null,
-        victoire: toInt(form.victoire),
-        defaite: toInt(form.defaite),
-        nul: toInt(form.nul),
-        ko: toInt(form.ko),
-        soumission: toInt(form.soumission),
-        combat: toInt(form.victoire) + toInt(form.defaite) + toInt(form.nul),
-        is_active: true,
-        poids_kg: parseWeight(form.poids_kg)
-      });
-      created = true;
-      // 2) Sa photo, avec l'identifiant qu'on vient de recevoir
-      if (photo) {
-        const fighterId = result.data?.id ?? result.id;
-        if (!fighterId) throw new Error("identifiant du fighter introuvable");
-        await adminUpload(`/fighters/${fighterId}/photos`, photo);
-      }
-      resetForm();
-      router.refresh();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Ajout impossible.";
-      if (created) {
-        // Le fighter existe : on ferme le formulaire (le ré-envoyer créerait un doublon)
-        setError(
-          `Fighter ajouté, mais la photo n'a pas pu être envoyée : ${message}. Utilise « Ajouter une photo » dans la liste.`,
-        );
-        resetForm();
-        router.refresh();
-      } else {
-        setError(message);
-      }
-    } finally {
-      setSaving(false);
-    }
-  };
-  const remove = async (fighter: FighterApi) => {
-    if (
-      !window.confirm(
-        `Supprimer ${fighter.prenom} ${fighter.nom} définitivement ?`,
-      )
-    )
+
+    if (form.poids_kg.trim() && parseWeight(form.poids_kg) === null) {
+      setError("Poids invalide (exemple : 77 ou 77,5).");
       return;
+    }
+
+    setSaving(true);
+
+    // 1) Le fighter
+    let fighterId: string | undefined;
+    try {
+      const result = await adminRequest<{ data?: { id?: string }; id?: string }>(
+        "/fighters",
+        "POST",
+        {
+          prenom: form.prenom.trim(),
+          nom: form.nom.trim(),
+          surnom: form.surnom.trim() || null,
+          poids_kg: parseWeight(form.poids_kg),
+          // Vide = automatique : la catégorie est déduite du poids
+          weight_category: form.weight_category || null,
+          niveau: form.niveau || null,
+          reseaux: form.reseaux.trim() || null,
+          bio: form.bio.trim() || null,
+          style_de_combat: form.style_de_combat.trim() || null,
+          palmares: form.palmares.trim() || null,
+          victoire: toInt(form.victoire),
+          defaite: toInt(form.defaite),
+          nul: toInt(form.nul),
+          ko: toInt(form.ko),
+          soumission: toInt(form.soumission),
+          combat: toInt(form.victoire) + toInt(form.defaite) + toInt(form.nul),
+          is_active: true,
+        }
+      );
+      fighterId = result.data?.id ?? result.id;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Ajout impossible.");
+      setSaving(false);
+      return;
+    }
+
+    // 2) Les médias. Le fighter existe : on ne laisse plus ré-envoyer le formulaire (doublon).
+    const problems: string[] = [];
+
+    if (!fighterId && (photos.length > 0 || videos.length > 0)) {
+      problems.push("identifiant du fighter introuvable.");
+    } else if (fighterId) {
+      // La première photo envoyée devient la photo de couverture
+      for (let i = 0; i < photos.length; i++) {
+        setStatus(`Envoi de la photo ${i + 1}/${photos.length}...`);
+        try {
+          await adminUpload(`/fighters/${fighterId}/photos`, photos[i]);
+        } catch (err) {
+          problems.push(
+            `photo ${i + 1} (${err instanceof Error ? err.message : "échec"}).`
+          );
+        }
+      }
+
+      for (let i = 0; i < videos.length; i++) {
+        setStatus(`Envoi de la vidéo ${i + 1}/${videos.length}...`);
+        setPercent(0);
+        try {
+          await uploadFighterVideo(fighterId, videos[i], setPercent);
+        } catch (err) {
+          problems.push(
+            `vidéo « ${videos[i].name} » (${err instanceof Error ? err.message : "échec"}).`
+          );
+        }
+      }
+    }
+
+    setStatus("");
+    setPercent(null);
+    resetForm();
+    if (problems.length > 0) {
+      setError(
+        `Fighter ajouté, mais ces médias n'ont pas pu être envoyés : ${problems.join(" ")} Ouvre « Modifier » pour les ajouter.`
+      );
+    }
+    router.refresh();
+    setSaving(false);
+  };
+
+  const remove = async (fighter: FighterApi) => {
+    if (!window.confirm(`Supprimer ${fighter.prenom} ${fighter.nom} définitivement ?`)) return;
     setBusyId(fighter.id);
     setError("");
     try {
       await adminRequest(`/fighters/${fighter.id}`, "DELETE");
+      if (editingId === fighter.id) setEditingId(null);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Suppression impossible.");
@@ -128,7 +258,7 @@ export default function FightersManager({
       setBusyId(null);
     }
   };
-  const editingFighter = fighters.find((f) => f.id === editingId) ?? null;
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -138,152 +268,107 @@ export default function FightersManager({
         <button
           onClick={() => {
             setEditingId(null);
-            showForm ? resetForm() : setShowForm(true);
+            if (showForm) resetForm();
+            else setShowForm(true);
           }}
           className={btnPrimary}
         >
           {showForm ? "ANNULER" : "AJOUTER UN FIGHTER"}
         </button>
       </div>
+
       {error && (
         <div className="mt-6 rounded-md border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
+
       {showForm && (
         <form
           onSubmit={create}
-          className="mt-6 space-y-6 rounded-md border border-white/10 bg-neutral-950 p-5"
+          className="mt-6 rounded-md border border-white/10 bg-neutral-950 p-5"
         >
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            <FormField
-              label="Prénom"
-              required
-              value={form.prenom}
-              onChange={set("prenom")}
-            />
-            <FormField
-              label="Nom"
-              required
-              value={form.nom}
-              onChange={set("nom")}
-            />
-            <FormField
-              label="Surnom"
-              value={form.surnom}
-              onChange={set("surnom")}
-            />
-            <FormField
-              label="Réseaux (lien Instagram)"
-              value={form.reseaux}
-              onChange={set("reseaux")}
-            />
-            <FormField
-              label="Poids (kg)"
-              inputMode="decimal"
-              placeholder="77"
-              value={form.poids_kg}
-              onChange={set("poids_kg")}
-            />
-            <SelectField
-              label="Catégorie de poids"
-              value={form.weight_category}
-              onChange={set("weight_category")}
-              options={WEIGHT_CATEGORIES}
-              placeholder="Automatique (selon le poids...)"
-            />
-            <SelectField
-              label="Niveau"
-              value={form.niveau}
-              onChange={set("niveau")}
-              options={FIGHTER_LEVELS}
-              placeholder="Choisir..."
-            />
-          </div>
-          <PhotoPicker
-            key={pickerKey}
-            label="Photo"
-            onChange={(files) => setPhoto(files[0] ?? null)}
-          />
-          <div>
-            <p className="text-xs font-semibold tracking-widest text-neutral-400">
-              RECORD
-            </p>
-            <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-5">
+          {/* "disabled" bloque tous les champs pendant l'envoi */}
+          <fieldset disabled={saving} className="space-y-6">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <FormField label="Prénom" required value={form.prenom} onChange={set("prenom")} />
+              <FormField label="Nom" required value={form.nom} onChange={set("nom")} />
+              <FormField label="Surnom" value={form.surnom} onChange={set("surnom")} />
+              <FormField label="Réseaux (lien Instagram)" value={form.reseaux} onChange={set("reseaux")} />
               <FormField
-                label="Victoires"
-                type="number"
-                min={0}
-                value={form.victoire}
-                onChange={set("victoire")}
+                label="Poids (kg)"
+                inputMode="decimal"
+                placeholder="77"
+                value={form.poids_kg}
+                onChange={set("poids_kg")}
               />
-              <FormField
-                label="Défaites"
-                type="number"
-                min={0}
-                value={form.defaite}
-                onChange={set("defaite")}
+              <SelectField
+                label="Catégorie de poids"
+                value={form.weight_category}
+                onChange={set("weight_category")}
+                options={WEIGHT_CATEGORIES}
+                placeholder="Automatique (selon le poids)"
               />
-              <FormField
-                label="Nuls"
-                type="number"
-                min={0}
-                value={form.nul}
-                onChange={set("nul")}
-              />
-              <FormField
-                label="KO"
-                type="number"
-                min={0}
-                value={form.ko}
-                onChange={set("ko")}
-              />
-              <FormField
-                label="Soumissions"
-                type="number"
-                min={0}
-                value={form.soumission}
-                onChange={set("soumission")}
+              <SelectField
+                label="Niveau"
+                value={form.niveau}
+                onChange={set("niveau")}
+                options={FIGHTER_LEVELS}
+                placeholder="Choisir..."
               />
             </div>
-          </div>
-          <TextAreaField
-            label="Bio"
-            rows={4}
-            value={form.bio}
-            onChange={set("bio")}
-          />
-          <TextAreaField
-            label="Style de combat"
-            rows={3}
-            value={form.style_de_combat}
-            onChange={set("style_de_combat")}
-          />
-          <TextAreaField
-            label="Palmarès (une réalisation par ligne)"
-            rows={4}
-            value={form.palmares}
-            onChange={set("palmares")}
-          />
-          <div className="flex gap-3">
-            <button
-              type="submit"
-              disabled={saving || !form.prenom.trim() || !form.nom.trim()}
-              className={btnPrimary}
-            >
-              {saving ? "ENREGISTREMENT..." : "ENREGISTRER"}
-            </button>
-            <button
-              type="button"
-              onClick={resetForm}
-              disabled={saving}
-              className={btnOutline}
-            >
-              ANNULER
-            </button>
-          </div>
+
+            <PhotoPicker
+              key={`photos-${pickerKey}`}
+              multiple
+              max={MAX_PHOTOS}
+              label="Photos"
+              onChange={setPhotos}
+            />
+
+            <VideoFilesPicker key={`videos-${pickerKey}`} files={videos} onChange={setVideos} />
+
+            <div>
+              <p className="text-xs font-semibold tracking-widest text-neutral-400">RECORD</p>
+              <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-5">
+                <FormField label="Victoires" type="number" min={0} value={form.victoire} onChange={set("victoire")} />
+                <FormField label="Défaites" type="number" min={0} value={form.defaite} onChange={set("defaite")} />
+                <FormField label="Nuls" type="number" min={0} value={form.nul} onChange={set("nul")} />
+                <FormField label="KO" type="number" min={0} value={form.ko} onChange={set("ko")} />
+                <FormField label="Soumissions" type="number" min={0} value={form.soumission} onChange={set("soumission")} />
+              </div>
+            </div>
+
+            <TextAreaField label="Bio" rows={4} value={form.bio} onChange={set("bio")} />
+            <TextAreaField label="Style de combat" rows={3} value={form.style_de_combat} onChange={set("style_de_combat")} />
+            <TextAreaField label="Palmarès (une réalisation par ligne)" rows={4} value={form.palmares} onChange={set("palmares")} />
+
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="submit"
+                disabled={saving || !form.prenom.trim() || !form.nom.trim()}
+                className={btnPrimary}
+              >
+                {saving ? "ENREGISTREMENT..." : "ENREGISTRER"}
+              </button>
+              <button type="button" onClick={resetForm} disabled={saving} className={btnOutline}>
+                ANNULER
+              </button>
+              {status && <span className="text-xs text-neutral-400">{status}</span>}
+            </div>
+
+            {percent !== null && (
+              <div className="max-w-sm">
+                <div className="h-2 w-full overflow-hidden rounded bg-white/10">
+                  <div className="h-full bg-orange-500 transition-all" style={{ width: `${percent}%` }} />
+                </div>
+                <p className="mt-1 text-xs text-neutral-400">{percent} %</p>
+              </div>
+            )}
+          </fieldset>
         </form>
       )}
+
       {editingFighter && (
         <FighterEditor
           key={editingFighter.id}
@@ -291,27 +376,20 @@ export default function FightersManager({
           onClose={() => setEditingId(null)}
         />
       )}
+
       {fighters.length === 0 ? (
         <p className="mt-10 text-center text-neutral-500">
-          Aucun fighter pour le moment. Ajoute le premier ou valide une
-          candidature.
+          Aucun fighter pour le moment. Ajoute le premier ou valide une candidature.
         </p>
       ) : (
         <ul className="mt-6 divide-y divide-white/10 rounded-md border border-white/10 bg-neutral-950">
           {fighters.map((f) => (
-            <li
-              key={f.id}
-              className="flex flex-wrap items-center justify-between gap-3 p-4"
-            >
+            <li key={f.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div className="flex items-center gap-4">
                 <div className="h-16 w-12 shrink-0 overflow-hidden rounded-md bg-neutral-900">
                   {f.photo_url && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={f.photo_url}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
+                    <img src={f.photo_url} alt="" className="h-full w-full object-cover" />
                   )}
                 </div>
                 <div>
@@ -319,33 +397,33 @@ export default function FightersManager({
                     {f.prenom} {f.nom}
                     {f.surnom && (
                       <span className="ml-2 text-sm font-semibold italic text-orange-500">
-                        "{f.surnom}"
+                        &quot;{f.surnom}&quot;
                       </span>
                     )}
                     {!f.is_active && (
                       <span className="ml-2 text-[10px] font-bold tracking-widest text-neutral-500">
-                        INACTIF
+                        MASQUÉ
                       </span>
                     )}
                   </p>
                   <p className="mt-1 text-xs text-neutral-500">
-                    {f.weight_category ?? "Catégorie non définie"} ·{" "}
-                    {f.victoire}-{f.defaite}-{f.nul}
+                    {f.weight_category ?? "Catégorie non définie"} · {f.victoire}-{f.defaite}-{f.nul}
+                    {f.media?.length > 0 && ` · ${f.media.length} média(s)`}
                   </p>
                 </div>
               </div>
+
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => { setShowForm(false); setEditingId(f.id); }}
+                  onClick={() => {
+                    setShowForm(false);
+                    setEditingId(f.id);
+                  }}
                   className={btnOutline}
                 >
                   MODIFIER
                 </button>
-                <button
-                  onClick={() => remove(f)}
-                  disabled={busyId === f.id}
-                  className={btnDanger}
-                >
+                <button onClick={() => remove(f)} disabled={busyId === f.id} className={btnDanger}>
                   Supprimer
                 </button>
               </div>
