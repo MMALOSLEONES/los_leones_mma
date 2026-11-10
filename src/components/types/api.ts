@@ -37,6 +37,7 @@ export interface DemandeApi {
   created_at: string | null;
   poids_kg: number | null;
   categorie_estimee: string | null;
+   media?: any[]; 
 }
 
 export interface FighterApi {
