@@ -10,6 +10,13 @@ export interface AdminUser {
   mail: string;
 }
 
+export interface DemandeMediaApi {
+  id: string;
+  type: "photo" | "video";
+  chemin: string;
+  position: number;
+}
+
 export interface DemandeApi {
   id: string;
   reference_code: string | null;
@@ -37,7 +44,17 @@ export interface DemandeApi {
   created_at: string | null;
   poids_kg: number | null;
   categorie_estimee: string | null;
-   media?: any[]; 
+  media?: DemandeMediaApi[]; 
+}
+
+// Interface requise pour la gestion multimédia avancée des combattants
+export interface FighterMediaApi {
+  id: string;
+  type: "photo" | "video";
+  url: string | null;
+  mime: string | null;
+  taille: number | null;
+  position: number;
 }
 
 export interface FighterApi {
@@ -63,6 +80,9 @@ export interface FighterApi {
   is_active: boolean;
   poids_kg: number | null;
   limite_categorie_kg: number | null;
+  
+  // Correction du build : Ajout du tableau de médias attendu par FighterEditor et public-api
+  media: FighterMediaApi[];
 }
 
 export interface ArticlePhotoApi {
