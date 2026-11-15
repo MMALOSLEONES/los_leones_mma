@@ -6,7 +6,7 @@
 // on préfère afficher la première erreur précise.
 function errorMessage(data: { message?: string; errors?: Record<string, string[]> }, status: number) {
   const first = data.errors ? Object.values(data.errors).flat()[0] : undefined;
-  return first ?? data.message ?? `Erreur (${status}).`;
+  return first || data.message || `Erreur (${status}).`;
 }
 
 export async function adminRequest<T = unknown>(

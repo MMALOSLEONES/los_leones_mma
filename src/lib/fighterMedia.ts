@@ -31,7 +31,7 @@ export function videoFileError(file: File): string | null {
 export async function uploadFighterVideo(
   fighterId: string,
   file: File,
-  onProgress: (percent: number) => void
+  onProgress: (percent: number) => void,
 ): Promise<void> {
   const problem = videoFileError(file);
   if (problem) throw new Error(problem);
@@ -40,7 +40,7 @@ export async function uploadFighterVideo(
   const target = await adminRequest<UploadTarget>(
     `/fighters/${fighterId}/videos/upload-url`,
     "POST",
-    { content_type: file.type, size: file.size }
+    { content_type: file.type, size: file.size },
   );
 
   if (target.mode === "direct") {
@@ -69,7 +69,7 @@ export async function uploadFighterVideo(
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(
-      data.errors?.video?.[0] ?? data.message ?? `Erreur (${response.status}).`
+      data.errors?.video?.[0] || data.message || `Erreur (${response.status}).`,
     );
   }
   onProgress(100);
