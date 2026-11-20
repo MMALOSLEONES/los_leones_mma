@@ -2,24 +2,31 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getArticle } from "@/lib/public-api";
 
-type PageProps = {
-  params: Promise<{ slug: string }>;
-};
+type PageProps = { params: Promise<{ slug: string }> };
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
+
+function toUrl(p: unknown): string {
+  const raw =
+    typeof p === "string"
+      ? p
+      : ((p as { url?: string; path?: string })?.url ??
+         (p as { path?: string })?.path ??
+         "");
+  if (!raw) return "";
+  if (raw.startsWith("http")) return raw;
+  return `${API_BASE}${raw.startsWith("/") ? "" : "/"}${raw}`;
+}
 
 export default async function ArticlePage({ params }: PageProps) {
   const { slug } = await params;
   const article = await getArticle(slug);
+  if (!article) notFound();
 
-  if (!article) {
-    notFound();
-  }
-
-  // La première photo sert de couverture, les suivantes forment une galerie
-  const [cover, ...others] = article.photos;
+  const photos = (article.photos ?? []).map(toUrl).filter(Boolean);
+  const [cover, ...others] = photos;
 
   return (
-     <>
-    <pre className="text-xs text-white">{JSON.stringify(article.photos)}</pre>
     <main className="mx-auto max-w-3xl px-4 py-16 lg:px-8">
       <Link
         href="/actualites"
@@ -35,7 +42,6 @@ export default async function ArticlePage({ params }: PageProps) {
         {article.title}
       </h1>
 
-      {/* Sans photo, on n'affiche pas de bloc gris vide */}
       {cover && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -57,7 +63,7 @@ export default async function ArticlePage({ params }: PageProps) {
           <div className="mt-4 grid grid-cols-2 gap-3">
             {others.map((url, i) => (
               <a
-                key={url}
+                key={`${url}-${i}`}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -75,6 +81,5 @@ export default async function ArticlePage({ params }: PageProps) {
         </section>
       )}
     </main>
-    </>
   );
 }
