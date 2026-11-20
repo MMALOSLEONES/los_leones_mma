@@ -15,13 +15,13 @@ type Props = {
 };
 
 const sources: SourceConnaissance[] = [
-  "Instagram",
-  "TikTok",
-  "Facebook",
-  "WhatsApp",
-  "Recommandation",
-  "Google",
-  "Autre",
+  "instagram",
+  "tiktok",
+  "facebook",
+  "whatsapp",
+  "recommandation",
+  "google",
+  "autre",
 ];
 
 export default function StepPhoto({ data, update, onNext, onBack }: Props) {

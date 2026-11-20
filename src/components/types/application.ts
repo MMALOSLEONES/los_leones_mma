@@ -1,11 +1,11 @@
 export type SourceConnaissance =
-  | "Instagram"
-  | "TikTok"
-  | "Facebook"
-  | "WhatsApp"
-  | "Recommandation"
-  | "Google"
-  | "Autre";
+  | "instagram"
+  | "tiktok"
+  | "facebook"
+  | "whatsapp"
+  | "recommandation"
+  | "google"
+  | "autre";
 
 export interface ApplicationFormData {
   // Étape 1 — Informations
