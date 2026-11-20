@@ -68,20 +68,20 @@ export default async function ArticlePage({ params }: PageProps) {
           <h2 className="text-xs font-bold tracking-widest text-orange-500">
             GALERIE
           </h2>
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-4 columns-2 gap-3">
             {others.map((url, i) => (
               <a
                 key={`${url}-${i}`}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block overflow-hidden rounded-md"
+                className="mb-3 block overflow-hidden rounded-md"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={url}
                   alt={`${article.title} — photo ${i + 2}`}
-                  className="aspect-[4/3] w-full object-cover transition hover:opacity-90"
+                  className="h-auto w-full transition hover:opacity-90"
                 />
               </a>
             ))}
