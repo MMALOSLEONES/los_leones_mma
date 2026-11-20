@@ -1,11 +1,7 @@
 import Link from "next/link";
 import { Article } from "@/components/types/article";
 
-export default function ArticleCard({
-  article,
-}: {
-  article: Article;
-}) {
+export default function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={`/actualites/${article.slug}`}
@@ -18,7 +14,7 @@ export default function ArticleCard({
           <img
             src={article.photos[0]}
             alt={article.title}
-            className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
+            className="h-full w-full object-cover md:grayscale md:transition md:duration-500 md:group-hover:scale-105 md:group-hover:grayscale-0"
           />
         )}
       </div>
