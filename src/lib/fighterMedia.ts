@@ -1,9 +1,7 @@
 import { adminRequest } from "@/lib/adminFetch";
 import { putFile } from "@/lib/directUpload";
 
-// Ces limites sont aussi vérifiées par Laravel : ici elles évitent
-// d'envoyer un fichier qui sera refusé.
-export const VIDEO_TYPES = ["video/mp4", "video/webm"];
+export const VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 export const MAX_VIDEO_BYTES = 150 * 1024 * 1024; // 150 Mo
 export const MAX_PHOTOS = 10;
 export const MAX_VIDEOS = 5;
@@ -17,9 +15,19 @@ type UploadTarget =
     }
   | { mode: "server"; chemin: null };
 
+// Certains navigateurs ne renseignent pas le type d'un fichier .mov : on le déduit du nom
+export function videoContentType(file: File): string {
+  if (file.type) return file.type;
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".mov")) return "video/quicktime";
+  if (name.endsWith(".mp4") || name.endsWith(".m4v")) return "video/mp4";
+  if (name.endsWith(".webm")) return "video/webm";
+  return "";
+}
+
 export function videoFileError(file: File): string | null {
-  if (!VIDEO_TYPES.includes(file.type)) {
-    return "Format non accepté : utilise une vidéo MP4 ou WebM.";
+  if (!VIDEO_TYPES.includes(videoContentType(file))) {
+    return "Format non accepté : utilise une vidéo MP4, MOV ou WebM.";
   }
   if (file.size > MAX_VIDEO_BYTES) {
     const mo = Math.round(file.size / 1024 / 1024);
@@ -31,16 +39,18 @@ export function videoFileError(file: File): string | null {
 export async function uploadFighterVideo(
   fighterId: string,
   file: File,
-  onProgress: (percent: number) => void,
+  onProgress: (percent: number) => void
 ): Promise<void> {
   const problem = videoFileError(file);
   if (problem) throw new Error(problem);
+
+  const contentType = videoContentType(file);
 
   // 1) Laravel signe une adresse d'envoi temporaire
   const target = await adminRequest<UploadTarget>(
     `/fighters/${fighterId}/videos/upload-url`,
     "POST",
-    { content_type: file.type, size: file.size },
+    { content_type: contentType, size: file.size }
   );
 
   if (target.mode === "direct") {
@@ -53,8 +63,7 @@ export async function uploadFighterVideo(
     return;
   }
 
-  // Développement local : le disque local ne sait pas signer d'adresse,
-  // le fichier passe alors par Laravel.
+  // Développement local : le fichier passe par Laravel
   onProgress(0);
   const body = new FormData();
   body.append("video", file);
@@ -69,7 +78,7 @@ export async function uploadFighterVideo(
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(
-      data.errors?.video?.[0] || data.message || `Erreur (${response.status}).`,
+      data.errors?.video?.[0] || data.message || `Erreur (${response.status}).`
     );
   }
   onProgress(100);

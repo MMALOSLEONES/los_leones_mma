@@ -363,7 +363,7 @@ export default function FighterEditor({ fighter, onClose }: Props) {
           AJOUTER DES PHOTOS
           <input
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="video/mp4,video/webm,video/quicktime,.mov"
             multiple
             className="hidden"
             disabled={disabled || photos.length >= MAX_PHOTOS}

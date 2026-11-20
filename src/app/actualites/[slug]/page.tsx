@@ -18,6 +18,8 @@ export default async function ArticlePage({ params }: PageProps) {
   const [cover, ...others] = article.photos;
 
   return (
+     <>
+    <pre className="text-xs text-white">{JSON.stringify(article.photos)}</pre>
     <main className="mx-auto max-w-3xl px-4 py-16 lg:px-8">
       <Link
         href="/actualites"
@@ -73,5 +75,6 @@ export default async function ArticlePage({ params }: PageProps) {
         </section>
       )}
     </main>
+    </>
   );
 }

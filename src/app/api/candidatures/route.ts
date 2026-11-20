@@ -148,9 +148,11 @@ export async function POST(request: Request) {
       { status: laravelResponse.status },
     );
   }
-
-  return NextResponse.json({
-    status: "ok",
-    referenceCode: result.data?.reference_code ?? null,
-  });
+return NextResponse.json({
+  status: "ok",
+  data: {
+    id: result.data?.id ?? null,
+    reference_code: result.data?.reference_code ?? null,
+  },
+});
 }

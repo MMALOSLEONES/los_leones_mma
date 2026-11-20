@@ -124,7 +124,7 @@ function VideoFilesPicker({
         AJOUTER DES VIDÉOS
         <input
           type="file"
-          accept="video/mp4,video/webm"
+          accept="video/mp4,video/webm,video/quicktime,.mov"
           multiple
           className="hidden"
           disabled={files.length >= MAX_VIDEOS}

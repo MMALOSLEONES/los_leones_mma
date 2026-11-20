@@ -177,7 +177,7 @@ export default function StepPhoto({ data, update, onNext, onBack }: Props) {
           {data.videos.map((file, index) => (
             <div key={index} className="relative flex items-center justify-between rounded-md border border-white/10 bg-neutral-900/60 p-3">
               <div className="flex items-center space-x-3 overflow-hidden pr-6">
-                <span className="text-lg">🎬</span>
+                <span className="text-lg"></span>
                 <div className="overflow-hidden">
                   <p className="truncate text-xs font-medium text-white">{file.name}</p>
                   <p className="text-[10px] text-neutral-500">{(file.size / 1024 / 1024).toFixed(1)} Mo</p>
@@ -207,12 +207,13 @@ export default function StepPhoto({ data, update, onNext, onBack }: Props) {
         <input
           ref={videoInputRef}
           type="file"
-          accept="video/mp4,video/webm"
+         accept="video/mp4,video/webm,video/quicktime,.mov,.m4v"
           multiple
           className="hidden"
           onChange={handleVideos}
         />
-        <p className="text-[11px] text-neutral-500">MP4 ou WebM. Maximum {MAX_VIDEO_SIZE_MB} Mo par vidéo.</p>
+      <p className="text-[11px] text-neutral-500">MP4, MOV (iPhone) ou WebM. Maximum {MAX_VIDEO_SIZE_MB} Mo par vidéo.</p>
+
       </div>
 
       {/* --- SOURCE DE CONNAISSANCE --- */}

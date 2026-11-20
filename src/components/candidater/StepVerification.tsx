@@ -13,17 +13,33 @@ type Props = {
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-white/5 py-3">
-      <span className="text-xs font-semibold tracking-widest text-neutral-500">{label}</span>
+      <span className="text-xs font-semibold tracking-widest text-neutral-500">
+        {label}
+      </span>
       <span className="text-right text-sm text-white">{value || "—"}</span>
     </div>
   );
 }
 
-function SectionHeader({ title, onModify, ctaText }: { title: string; onModify: () => void; ctaText: string }) {
+function SectionHeader({
+  title,
+  onModify,
+  ctaText,
+}: {
+  title: string;
+  onModify: () => void;
+  ctaText: string;
+}) {
   return (
     <div className="mt-8 flex items-center justify-between">
-      <h3 className="text-xs font-bold tracking-widest text-orange-500">{title}</h3>
-      <button type="button" onClick={onModify} className="text-xs font-semibold text-neutral-400 hover:text-white">
+      <h3 className="text-xs font-bold tracking-widest text-orange-500">
+        {title}
+      </h3>
+      <button
+        type="button"
+        onClick={onModify}
+        className="text-xs font-semibold text-neutral-400 hover:text-white"
+      >
         {ctaText}
       </button>
     </div>
@@ -72,31 +88,53 @@ export default function StepVerification({
   return (
     <div>
       <h2 className="text-2xl font-extrabold text-white">{t("title")}</h2>
-      <p className="mt-2 text-sm text-neutral-400">
-        {t("description")}
-      </p>
+      <p className="mt-2 text-sm text-neutral-400">{t("description")}</p>
 
-      <SectionHeader title={t("sections.informations")} onModify={() => onGoToStep(1)} ctaText={t("modifier")} />
-      <SummaryRow label={t("labels.nomComplet")} value={`${data.prenom} ${data.nom}`} />
+      <SectionHeader
+        title={t("sections.informations")}
+        onModify={() => onGoToStep(1)}
+        ctaText={t("modifier")}
+      />
+      <SummaryRow
+        label={t("labels.nomComplet")}
+        value={`${data.prenom} ${data.nom}`}
+      />
       <SummaryRow label={t("labels.naissance")} value={birth} />
       <SummaryRow label={t("labels.telephone")} value={data.telephone} />
       <SummaryRow label={t("labels.email")} value={data.email} />
-      <SummaryRow label={t("labels.poids")} value={data.poidsKg ? `${data.poidsKg} kg` : ""} />
+      <SummaryRow
+        label={t("labels.poids")}
+        value={data.poidsKg ? `${data.poidsKg} kg` : ""}
+      />
       <SummaryRow
         label={t("labels.ville")}
         value={[data.ville, data.quartier].filter(Boolean).join(" — ")}
       />
 
-      <SectionHeader title={t("sections.profilSportif")} onModify={() => onGoToStep(2)} ctaText={t("modifier")} />
-      <SummaryRow label={t("labels.sportCombat")} value={data.aExperienceCombat ? t("oui") : t("non")} />
+      <SectionHeader
+        title={t("sections.profilSportif")}
+        onModify={() => onGoToStep(2)}
+        ctaText={t("modifier")}
+      />
+      <SummaryRow
+        label={t("labels.sportCombat")}
+        value={data.aExperienceCombat ? t("oui") : t("non")}
+      />
       {data.aExperienceCombat && (
         <>
           <SummaryRow label={t("labels.niveau")} value={data.niveau} />
-          <SummaryRow label={t("labels.competitions")} value={competitionsText(data)} />
+          <SummaryRow
+            label={t("labels.competitions")}
+            value={competitionsText(data)}
+          />
         </>
       )}
 
-      <SectionHeader title={t("sections.photo")} onModify={() => onGoToStep(3)} ctaText={t("modifier")} />
+      <SectionHeader
+        title={t("sections.photo")}
+        onModify={() => onGoToStep(3)}
+        ctaText={t("modifier")}
+      />
       {/* MISE À JOUR ICI : On utilise notre fonction pour afficher le total des fichiers chargés */}
       <SummaryRow label={t("labels.fichier")} value={getMediaSummaryText()} />
       <SummaryRow label={t("labels.source")} value={data.commentConnu} />
@@ -111,24 +149,42 @@ export default function StepVerification({
         {t("consentement")}
       </label>
 
-      <div className="mt-10 flex justify-between border-t border-white/10 pt-6">
-        <button
-          type="button"
-          onClick={onBack}
-          disabled={submitting}
-          className="rounded-md border border-white/20 px-6 py-3 text-xs font-bold tracking-widest text-white hover:border-white/40 disabled:opacity-40"
-        >
-          {t("retour")}
-        </button>
-        {/* Validation débloquée : la condition de soumission dépend du consentement de l'étape 4 et du nombre de photos de l'étape 3 */}
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={!data.consentAccepted || submitting || (data.photos?.length ?? 0) === 0}
-          className="rounded-md bg-orange-500 px-6 py-3 text-xs font-bold tracking-widest text-black transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          {submitting ? t("envoiEnCours") : t("envoyer")}
-        </button>
+      <div className="mt-8 border-t border-white/10 pt-6">
+        <div className="mb-6 rounded-md border border-white/10 bg-white/[0.03] p-4">
+          <p className="text-xs font-semibold tracking-widest text-neutral-400">
+            CANDIDATURE
+          </p>
+
+          <p className="mt-2 text-sm text-neutral-300">
+            Votre candidature sera enregistrée après validation de vos
+            informations. Les modalités de paiement des frais de candidature
+            vous seront communiquées ultérieurement.
+          </p>
+        </div>
+
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={onBack}
+            disabled={submitting}
+            className="rounded-md border border-white/20 px-6 py-3 text-xs font-bold tracking-widest text-white hover:border-white/40 disabled:opacity-40"
+          >
+            {t("retour")}
+          </button>
+
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={
+              !data.consentAccepted ||
+              submitting ||
+              (data.photos?.length ?? 0) === 0
+            }
+            className="rounded-md bg-orange-500 px-6 py-3 text-xs font-bold tracking-widest text-black transition hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {submitting ? "ENVOI EN COURS..." : "ENVOYER MA CANDIDATURE"}
+          </button>
+        </div>
       </div>
     </div>
   );
