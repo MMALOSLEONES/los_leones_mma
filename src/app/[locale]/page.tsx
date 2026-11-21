@@ -6,6 +6,7 @@ import CTASection from "@/components/home/CTASection";
 import PartnersSection from "@/components/home/PartnersSection";
 import NewsSection from "@/components/home/NewsSection";
 import AnnouncementBar from "@/components/home/AnnouncementBar";
+import HomePartner from "@/components/home/HomePartner";
 
 export default function HomePage() {
   return (
@@ -26,6 +27,7 @@ export default function HomePage() {
       <FightersPreview />
       <PartnersSection />
       <CTASection />
+      <HomePartner />
     </main>
   );
 }

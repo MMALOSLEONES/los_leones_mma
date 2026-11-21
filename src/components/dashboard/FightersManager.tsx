@@ -137,7 +137,7 @@ function VideoFilesPicker({
       </label>
 
       <p className="mt-2 text-xs text-neutral-500">
-        MP4 ou WebM, 150 Mo maximum chacune. Compresse-les avant (720p suffit).
+        MP4 , MOV, WebM, 150 Mo maximum chacune. Compresse-les avant (720p suffit).
       </p>
 
       {error && <p className="mt-2 text-xs text-red-400">{error}</p>}

@@ -344,5 +344,23 @@
    "FighterPage": {
     "gallery": "Gallery",
     "videos": "Videos"
-  }
+  },
+  "CurrentPartners": {
+    "eyebrow": "Our network",
+    "title": "Our partners",
+    "description": "Collaborations that contribute to the growth and recognition of MMA.",
+    "partnerLogoAlt": "AEMMA España logo",
+    "partnerLabel": "Official partner",
+    "partnerDescription": "The Asociación Española de MMA (AEMMA) is our partner in Spain. A collaboration that encourages exchanges between members of the MMA community and contributes to the development of the sport."
+  },
+"HomePartner": {
+  "eyebrow": "Our collaborations",
+  "title": "A partner in Spain",
+  "description": "Working together for the development of MMA.",
+  "partnerLogoAlt": "AEMMA España logo",
+  "partnerName": "AEMMA – ESPAÑA",
+  "partnerSubtitle": "Asociación Española de MMA"
+}
+
+
 }
