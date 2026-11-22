@@ -348,19 +348,81 @@
     "videos": "Vidéos"
   },
   "CurrentPartners": {
-  "eyebrow": "Notre réseau",
-  "title": "Nos partenaires",
-  "description": "Des collaborations qui contribuent au développement et au rayonnement du MMA.",
-  "partnerLogoAlt": "Logo de l'AEMMA España",
-  "partnerLabel": "Partenaire officiel",
-  "partnerDescription": "L'Asociación Española de MMA (AEMMA) est notre partenaire en Espagne. Une collaboration qui favorise les échanges entre acteurs de la discipline et contribue au développement du MMA."
-},
-"HomePartner": {
-  "eyebrow": "Nos collaborations",
-  "title": "Un partenaire en Espagne",
-  "description": "Ensemble pour le développement du MMA.",
-  "partnerLogoAlt": "Logo de l'AEMMA España",
-  "partnerName": "AEMMA – ESPAÑA",
-  "partnerSubtitle": "Asociación Española de MMA"
-}
+    "eyebrow": "Notre réseau",
+    "title": "Nos partenaires",
+    "description": "Des collaborations qui contribuent au développement et au rayonnement du MMA.",
+    "partnerLogoAlt": "Logo de l'AEMMA España",
+    "partnerLabel": "Partenaire officiel",
+    "partnerDescription": "L'Asociación Española de MMA (AEMMA) est notre partenaire en Espagne. Une collaboration qui favorise les échanges entre acteurs de la discipline et contribue au développement du MMA."
+  },
+  "HomePartner": {
+    "eyebrow": "Nos collaborations",
+    "title": "Un partenaire en Espagne",
+    "description": "Ensemble pour le développement du MMA.",
+    "partnerLogoAlt": "Logo de l'AEMMA España",
+    "partnerName": "AEMMA – ESPAÑA",
+    "partnerSubtitle": "Asociación Española de MMA"
+  },
+  "ConditionsPage": {
+    "back": "Retour à l'accueil",
+    "eyebrow": "Informations légales",
+    "title": "Conditions générales",
+    "titleAccent": "de candidature",
+    "description": "Retrouvez les conditions relatives au dépôt d'une candidature, aux frais d'inscription et à l'intégration au sein de MMA Los Leones.",
+    "updated": "Dernière mise à jour : 22 novembre 2026",
+    "feeEyebrow": "Inscription au club",
+    "feeTitle": "Frais d'inscription",
+    "feeDescription": "Le paiement est obligatoire pour que votre candidature soit prise en compte. Il ne garantit pas votre acceptation au sein du club.",
+    "amountLabel": "Montant à régler",
+    "feeNotice": "Délai de traitement : 1 à 7 jours. Les frais ne sont pas remboursables en cas de refus de candidature, sous réserve des exceptions prévues dans les présentes conditions.",
+    "rulesEyebrow": "Règlement",
+    "rulesTitle": "Nos conditions",
+    "sections": {
+      "presentation": {
+        "title": "Présentation du club",
+        "content": "MMA Los Leones est un club sportif spécialisé dans la pratique des arts martiaux mixtes (MMA). Les présentes conditions définissent les modalités de candidature et d'inscription au sein du club."
+      },
+      "candidature": {
+        "title": "Dépôt de candidature",
+        "content": "Toute personne souhaitant rejoindre MMA Los Leones doit remplir le formulaire de candidature disponible sur notre site. Les informations fournies doivent être exactes et complètes. La création d'un compte utilisateur n'est pas nécessaire pour déposer une candidature."
+      },
+      "fees": {
+        "title": "Frais d'inscription",
+        "content": "Les frais d'inscription sont fixés à 10 000 FCFA. Ils sont obligatoires au moment du dépôt de la candidature et doivent être réglés à travers les moyens de paiement proposés sur la plateforme. Ces frais couvrent la procédure d'inscription et l'étude de la candidature.",
+        "extra": "Les frais d'inscription ne sont pas remboursables en cas de refus de la candidature, sauf erreur de paiement, double débit ou obligation légale contraire. Le paiement ne garantit pas automatiquement l'intégration au club."
+      },
+      "validation": {
+        "title": "Étude et délai de validation",
+        "content": "Chaque candidature est examinée par l'équipe de MMA Los Leones. Le délai de traitement est compris entre 1 et 7 jours à compter de la réception d'une candidature complète et du paiement confirmé.",
+        "extra": "À l'issue de cette période, le candidat est informé de la décision du club. MMA Los Leones se réserve le droit d'accepter ou de refuser une candidature en fonction de son évaluation et de ses besoins sportifs."
+      },
+      "integration": {
+        "title": "Intégration au club",
+        "content": "Le candidat devient officiellement Fighter de MMA Los Leones uniquement après validation de sa candidature par l'équipe du club.",
+        "extra": "Le paiement des frais d'inscription ne constitue pas une confirmation d'adhésion. Seule la décision officielle du club permet l'intégration du candidat."
+      },
+      "payment": {
+        "title": "Paiement et confirmation",
+        "content": "Les paiements sont effectués à travers les moyens proposés sur notre plateforme, notamment Wave et Orange Money, via notre prestataire de paiement.",
+        "extra": "Une candidature est considérée comme payée uniquement après confirmation effective de la transaction. En cas de difficulté ou de débit sans confirmation, le candidat peut contacter le club afin de faire vérifier son paiement."
+      },
+      "data": {
+        "title": "Données personnelles",
+        "content": "Les informations recueillies lors de la candidature sont utilisées pour étudier les demandes, contacter les candidats, gérer les inscriptions et assurer le suivi administratif du club.",
+        "extra": "Certaines informations nécessaires au traitement des paiements peuvent être transmises à notre prestataire de paiement et à ses partenaires. MMA Los Leones s'engage à protéger les données collectées et à les utiliser dans le cadre de ses activités et des obligations applicables."
+      },
+      "claims": {
+        "title": "Réclamations et assistance",
+        "content": "Pour toute question concernant une candidature, une inscription ou un paiement, le candidat peut contacter l'équipe de MMA Los Leones à travers les coordonnées indiquées sur le site officiel. Pour toute réclamation relative à un paiement, les informations permettant d'identifier la transaction pourront être demandées."
+      },
+      "acceptance": {
+        "title": "Acceptation des conditions",
+        "content": "En soumettant sa candidature et en procédant au paiement des frais d'inscription, le candidat reconnaît avoir pris connaissance des présentes conditions générales et les accepter.",
+        "extra": "MMA Los Leones peut mettre à jour ces conditions lorsque cela est nécessaire. La version applicable est celle publiée sur le site au moment du dépôt de la candidature."
+      }
+    },
+    "closingTitle": "Discipline. Force. Respect. Détermination.",
+    "closingDescription": "Toute candidature représente une première étape vers l'intégration au sein de notre club. La validation finale appartient à l'équipe de MMA Los Leones.",
+    "copyright": "© {year} MMA Los Leones. Tous droits réservés."
+  }
 }

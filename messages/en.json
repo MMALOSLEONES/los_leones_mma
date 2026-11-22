@@ -323,7 +323,8 @@
       "fichier": "FILE",
       "source": "SOURCE"
     }
-  },  "categories": {
+  },
+  "categories": {
     "Tous": "ALL",
     "Strawweight": "Strawweight",
     "Flyweight": "Flyweight",
@@ -340,8 +341,8 @@
     "subtitle": "Fighters represented by the agency.",
     "no_results": "No fighters match these filters.",
     "soon": "The roster is coming soon."
-  }, 
-   "FighterPage": {
+  },
+  "FighterPage": {
     "gallery": "Gallery",
     "videos": "Videos"
   },
@@ -353,14 +354,74 @@
     "partnerLabel": "Official partner",
     "partnerDescription": "The Asociación Española de MMA (AEMMA) is our partner in Spain. A collaboration that encourages exchanges between members of the MMA community and contributes to the development of the sport."
   },
-"HomePartner": {
-  "eyebrow": "Our collaborations",
-  "title": "A partner in Spain",
-  "description": "Working together for the development of MMA.",
-  "partnerLogoAlt": "AEMMA España logo",
-  "partnerName": "AEMMA – ESPAÑA",
-  "partnerSubtitle": "Asociación Española de MMA"
-}
-
-
+  "HomePartner": {
+    "eyebrow": "Our collaborations",
+    "title": "A partner in Spain",
+    "description": "Working together for the development of MMA.",
+    "partnerLogoAlt": "AEMMA España logo",
+    "partnerName": "AEMMA – ESPAÑA",
+    "partnerSubtitle": "Asociación Española de MMA"
+  },
+  "ConditionsPage": {
+    "back": "Back to home",
+    "eyebrow": "Legal information",
+    "title": "Terms and",
+    "titleAccent": "application conditions",
+    "description": "Find the conditions governing applications, registration fees and admission to MMA Los Leones.",
+    "updated": "Last updated: November 22, 2026",
+    "feeEyebrow": "Club registration",
+    "feeTitle": "Registration fees",
+    "feeDescription": "Payment is required for your application to be considered. It does not guarantee acceptance into the club.",
+    "amountLabel": "Amount due",
+    "feeNotice": "Processing time: 1 to 7 days. Registration fees are non-refundable if an application is rejected, subject to the exceptions stated in these terms.",
+    "rulesEyebrow": "Regulations",
+    "rulesTitle": "Our conditions",
+    "sections": {
+      "presentation": {
+        "title": "About the club",
+        "content": "MMA Los Leones is a sports club specializing in mixed martial arts (MMA). These terms define the application and registration process for joining the club."
+      },
+      "candidature": {
+        "title": "Submitting an application",
+        "content": "Anyone wishing to join MMA Los Leones must complete the application form available on our website. All information provided must be accurate and complete. Creating a user account is not required to submit an application."
+      },
+      "fees": {
+        "title": "Registration fees",
+        "content": "Registration fees are set at 10,000 FCFA. They must be paid when submitting an application through the payment methods available on the platform. These fees cover the registration process and application review.",
+        "extra": "Registration fees are non-refundable if an application is rejected, except in cases of payment error, duplicate charge or where required by law. Payment does not automatically guarantee admission to the club."
+      },
+      "validation": {
+        "title": "Application review and approval",
+        "content": "Each application is reviewed by the MMA Los Leones team. Processing takes between 1 and 7 days from receipt of a complete application and confirmed payment.",
+        "extra": "At the end of this period, the applicant is informed of the club's decision. MMA Los Leones reserves the right to accept or reject applications based on its assessment and sporting needs."
+      },
+      "integration": {
+        "title": "Joining the club",
+        "content": "An applicant officially becomes a Fighter at MMA Los Leones only after their application has been approved by the club's team.",
+        "extra": "Payment of the registration fee does not constitute confirmation of membership. Only the club's official approval allows the applicant to join."
+      },
+      "payment": {
+        "title": "Payment and confirmation",
+        "content": "Payments are made through the methods offered on our platform, including Wave and Orange Money, via our payment provider.",
+        "extra": "An application is considered paid only after the transaction has been effectively confirmed. If a payment is debited without confirmation, the applicant may contact the club to request verification."
+      },
+      "data": {
+        "title": "Personal data",
+        "content": "Information collected during the application process is used to review applications, contact applicants, manage registrations and handle the club's administrative follow-up.",
+        "extra": "Certain information required to process payments may be shared with our payment provider and its partners. MMA Los Leones undertakes to protect collected data and use it within the scope of its activities and applicable obligations."
+      },
+      "claims": {
+        "title": "Complaints and assistance",
+        "content": "For any questions regarding an application, registration or payment, applicants may contact the MMA Los Leones team using the contact details provided on the official website. Payment complaints may require information identifying the transaction."
+      },
+      "acceptance": {
+        "title": "Acceptance of these terms",
+        "content": "By submitting an application and paying the registration fee, applicants acknowledge that they have read, understood and accepted these terms and conditions.",
+        "extra": "MMA Los Leones may update these terms when necessary. The applicable version is the one published on the website when the application is submitted."
+      }
+    },
+    "closingTitle": "Discipline. Strength. Respect. Determination.",
+    "closingDescription": "Every application is the first step towards joining our club. Final approval rests with the MMA Los Leones team.",
+    "copyright": "© {year} MMA Los Leones. All rights reserved."
+  }
 }
