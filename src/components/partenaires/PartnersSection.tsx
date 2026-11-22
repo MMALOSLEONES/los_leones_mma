@@ -1,14 +1,12 @@
-
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 export default function PartnersSection() {
-const t = useTranslations("CurrentPartners");
+  const t = useTranslations("CurrentPartners");
 
   return (
     <section className="bg-[#050505] px-5 py-20 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl">
-
         {/* Heading */}
         <div className="mb-10">
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff6500]">
@@ -26,7 +24,6 @@ const t = useTranslations("CurrentPartners");
 
         {/* Partner card */}
         <div className="group grid overflow-hidden border border-neutral-800 bg-neutral-900/20 transition-colors duration-300 hover:border-neutral-700 md:grid-cols-[300px_1fr]">
-
           {/* Logo */}
           <div className="flex aspect-square items-center justify-center overflow-hidden bg-neutral-900 p-5 md:aspect-auto">
             <Image
@@ -40,7 +37,6 @@ const t = useTranslations("CurrentPartners");
 
           {/* Content */}
           <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14">
-
             <span className="mb-5 w-fit border border-[#ff6500]/40 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-[#ff6500]">
               {t("partnerLabel")}
             </span>
@@ -58,10 +54,8 @@ const t = useTranslations("CurrentPartners");
             <p className="max-w-lg text-sm leading-7 text-neutral-400 sm:text-base">
               {t("partnerDescription")}
             </p>
-
           </div>
         </div>
-
       </div>
     </section>
   );
