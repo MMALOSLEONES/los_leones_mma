@@ -123,7 +123,9 @@ export default function FighterEditor({ fighter, onClose }: Props) {
       setNotice("Modifications enregistrées.");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Enregistrement impossible.");
+      setError(
+        err instanceof Error ? err.message : "Enregistrement impossible.",
+      );
     } finally {
       setSaving(false);
     }
@@ -151,12 +153,14 @@ export default function FighterEditor({ fighter, onClose }: Props) {
         await adminUpload(`/fighters/${fighter.id}/photos`, prepared);
       } catch (err) {
         problems.push(
-          `${batch[i].name} : ${err instanceof Error ? err.message : "échec"}`
+          `${batch[i].name} : ${err instanceof Error ? err.message : "échec"}`,
         );
       }
     }
     if (files.length > room) {
-      problems.push(`Seules ${room} photo(s) ont été prises en compte (maximum ${MAX_PHOTOS}).`);
+      problems.push(
+        `Seules ${room} photo(s) ont été prises en compte (maximum ${MAX_PHOTOS}).`,
+      );
     }
 
     setBusy("");
@@ -168,7 +172,10 @@ export default function FighterEditor({ fighter, onClose }: Props) {
     setError("");
     setBusy("Mise à jour de la couverture...");
     try {
-      await adminRequest(`/fighters/${fighter.id}/media/${photo.id}/cover`, "PUT");
+      await adminRequest(
+        `/fighters/${fighter.id}/media/${photo.id}/cover`,
+        "PUT",
+      );
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Action impossible.");
@@ -248,10 +255,28 @@ export default function FighterEditor({ fighter, onClose }: Props) {
       {/* ─── Informations ─── */}
       <form onSubmit={save} className="space-y-6">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <FormField label="Prénom" required value={form.prenom} onChange={setText("prenom")} />
-          <FormField label="Nom" required value={form.nom} onChange={setText("nom")} />
-          <FormField label="Surnom" value={form.surnom} onChange={setText("surnom")} />
-          <FormField label="Réseaux (lien Instagram)" value={form.reseaux} onChange={setText("reseaux")} />
+          <FormField
+            label="Prénom"
+            required
+            value={form.prenom}
+            onChange={setText("prenom")}
+          />
+          <FormField
+            label="Nom"
+            required
+            value={form.nom}
+            onChange={setText("nom")}
+          />
+          <FormField
+            label="Surnom"
+            value={form.surnom}
+            onChange={setText("surnom")}
+          />
+          <FormField
+            label="Réseaux (lien Instagram)"
+            value={form.reseaux}
+            onChange={setText("reseaux")}
+          />
           <FormField
             label="Poids (kg)"
             inputMode="decimal"
@@ -276,25 +301,74 @@ export default function FighterEditor({ fighter, onClose }: Props) {
         </div>
 
         <div>
-          <p className="text-xs font-semibold tracking-widest text-neutral-400">RECORD</p>
+          <p className="text-xs font-semibold tracking-widest text-neutral-400">
+            RECORD
+          </p>
           <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-5">
-            <FormField label="Victoires" type="number" min={0} value={form.victoire} onChange={setText("victoire")} />
-            <FormField label="Défaites" type="number" min={0} value={form.defaite} onChange={setText("defaite")} />
-            <FormField label="Nuls" type="number" min={0} value={form.nul} onChange={setText("nul")} />
-            <FormField label="KO" type="number" min={0} value={form.ko} onChange={setText("ko")} />
-            <FormField label="Soumissions" type="number" min={0} value={form.soumission} onChange={setText("soumission")} />
+            <FormField
+              label="Victoires"
+              type="number"
+              min={0}
+              value={form.victoire}
+              onChange={setText("victoire")}
+            />
+            <FormField
+              label="Défaites"
+              type="number"
+              min={0}
+              value={form.defaite}
+              onChange={setText("defaite")}
+            />
+            <FormField
+              label="Nuls"
+              type="number"
+              min={0}
+              value={form.nul}
+              onChange={setText("nul")}
+            />
+            <FormField
+              label="KO"
+              type="number"
+              min={0}
+              value={form.ko}
+              onChange={setText("ko")}
+            />
+            <FormField
+              label="Soumissions"
+              type="number"
+              min={0}
+              value={form.soumission}
+              onChange={setText("soumission")}
+            />
           </div>
         </div>
 
-        <TextAreaField label="Bio" rows={4} value={form.bio} onChange={setText("bio")} />
-        <TextAreaField label="Style de combat" rows={3} value={form.style_de_combat} onChange={setText("style_de_combat")} />
-        <TextAreaField label="Palmarès (une réalisation par ligne)" rows={4} value={form.palmares} onChange={setText("palmares")} />
+        <TextAreaField
+          label="Bio"
+          rows={4}
+          value={form.bio}
+          onChange={setText("bio")}
+        />
+        <TextAreaField
+          label="Style de combat"
+          rows={3}
+          value={form.style_de_combat}
+          onChange={setText("style_de_combat")}
+        />
+        <TextAreaField
+          label="Palmarès (une réalisation par ligne)"
+          rows={4}
+          value={form.palmares}
+          onChange={setText("palmares")}
+        />
 
         <label className="flex items-center gap-3 text-sm text-neutral-300">
           <input
             type="checkbox"
             checked={form.is_active}
-            onChange={(e) => setForm((prev) => ({ ...prev, is_active: e.target.checked }))}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, is_active: e.target.checked }))
+            }
             className="h-4 w-4 accent-orange-500"
           />
           Visible sur le site
@@ -322,7 +396,11 @@ export default function FighterEditor({ fighter, onClose }: Props) {
                 <div className="relative h-32 w-24 overflow-hidden rounded-md bg-neutral-900">
                   {photo.url && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={photo.url} alt="" className="h-full w-full object-cover" />
+                    <img
+                      src={photo.url}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
                   )}
                   {index === 0 && (
                     <span className="absolute bottom-1 left-1 rounded bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black">
@@ -357,13 +435,15 @@ export default function FighterEditor({ fighter, onClose }: Props) {
 
         <label
           className={`${btnOutline} mt-4 inline-block cursor-pointer ${
-            disabled || photos.length >= MAX_PHOTOS ? "pointer-events-none opacity-40" : ""
+            disabled || photos.length >= MAX_PHOTOS
+              ? "pointer-events-none opacity-40"
+              : ""
           }`}
         >
           AJOUTER DES PHOTOS
           <input
             type="file"
-            accept="video/mp4,video/webm,video/quicktime,.mov"
+            accept="image/jpeg,image/png,image/webp"
             multiple
             className="hidden"
             disabled={disabled || photos.length >= MAX_PHOTOS}
@@ -375,7 +455,8 @@ export default function FighterEditor({ fighter, onClose }: Props) {
           />
         </label>
         <p className="mt-2 text-xs text-neutral-500">
-          La première photo est la photo principale de la fiche. Les photos sont réduites automatiquement.
+          La première photo est la photo principale de la fiche. Les photos sont
+          réduites automatiquement.
         </p>
       </div>
 
@@ -399,7 +480,9 @@ export default function FighterEditor({ fighter, onClose }: Props) {
                   />
                 )}
                 <div className="mt-2 flex items-center justify-between">
-                  <span className="text-[11px] text-neutral-500">{megaOctets(video.taille)}</span>
+                  <span className="text-[11px] text-neutral-500">
+                    {megaOctets(video.taille)}
+                  </span>
                   <button
                     type="button"
                     disabled={disabled}
@@ -416,7 +499,9 @@ export default function FighterEditor({ fighter, onClose }: Props) {
 
         <label
           className={`${btnOutline} mt-4 inline-block cursor-pointer ${
-            disabled || videos.length >= MAX_VIDEOS ? "pointer-events-none opacity-40" : ""
+            disabled || videos.length >= MAX_VIDEOS
+              ? "pointer-events-none opacity-40"
+              : ""
           }`}
         >
           AJOUTER UNE VIDÉO
@@ -433,20 +518,26 @@ export default function FighterEditor({ fighter, onClose }: Props) {
           />
         </label>
         <p className="mt-2 text-xs text-neutral-500">
-          MP4 ou WebM, 150 Mo maximum. Compresse la vidéo avant de l&apos;envoyer (720p suffit).
+          MP4 ou WebM, 150 Mo maximum. Compresse la vidéo avant de
+          l&apos;envoyer (720p suffit).
         </p>
 
         {progress !== null && (
           <div className="mt-3 max-w-sm">
             <div className="h-2 w-full overflow-hidden rounded bg-white/10">
-              <div className="h-full bg-orange-500 transition-all" style={{ width: `${progress}%` }} />
+              <div
+                className="h-full bg-orange-500 transition-all"
+                style={{ width: `${progress}%` }}
+              />
             </div>
             <p className="mt-1 text-xs text-neutral-400">{progress} %</p>
           </div>
         )}
       </div>
 
-      {busy && progress === null && <p className="text-xs text-neutral-400">{busy}</p>}
+      {busy && progress === null && (
+        <p className="text-xs text-neutral-400">{busy}</p>
+      )}
     </div>
   );
 }
