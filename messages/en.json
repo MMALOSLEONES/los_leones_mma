@@ -346,17 +346,30 @@
     "gallery": "Gallery",
     "videos": "Videos"
   },
-  "CurrentPartners": {
-    "eyebrow": "Our network",
-    "title": "Our partners",
-    "description": "Collaborations that contribute to the growth and recognition of MMA.",
-    "partnerLogoAlt": "AEMMA España logo",
-    "partnerLabel": "Official partner",
-    "partnerDescription": "The Asociación Española de MMA (AEMMA) is our partner in Spain. A collaboration that encourages exchanges between members of the MMA community and contributes to the development of the sport."
-  },
+ "CurrentPartners": {
+  "eyebrow": "Our network",
+  "title": "Our partners",
+  "description": "Collaborations that contribute to the growth and recognition of MMA.",
+  "partnerLabel": "Official partner",
+  "partners": {
+    "aemma": {
+      "alt": "AEMMA España logo",
+      "description": "The Asociación Española de MMA (AEMMA) is our partner in Spain. This collaboration encourages exchanges between members of the discipline and contributes to the development of MMA."
+    },
+    "chinto": {
+      "alt": "Chinto Mordillo",
+      "subtitle": "Martial arts master and combat sports figure",
+      "description": "Chinto Mordillo is a direct partner of Los Leones MMA. This partnership reflects our commitment to developing exchanges and relationships within the combat sports community."
+    },
+    "wkba": {
+      "alt": "WKBA logo",
+      "description": "The World Kickboxing Association (WKBA) is a direct partner of Los Leones MMA. This partnership helps strengthen connections within the international combat sports community."
+    }
+  }
+},
   "HomePartner": {
     "eyebrow": "Our collaborations",
-    "title": "A partner in Spain",
+    "title": "Our partners",
     "description": "Working together for the development of MMA.",
     "partnerLogoAlt": "AEMMA España logo",
     "partnerName": "AEMMA – ESPAÑA",

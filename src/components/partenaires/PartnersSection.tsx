@@ -1,13 +1,43 @@
+
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 export default function PartnersSection() {
   const t = useTranslations("CurrentPartners");
 
+  const partners = [
+    {
+      id: "aemma",
+      image: "/images/partners/aemma.jpg",
+      alt: t("partners.aemma.alt"),
+      name: "AEMMA",
+      country: "– ESPAÑA",
+      subtitle: "Asociación Española de MMA",
+      description: t("partners.aemma.description"),
+    },
+    {
+      id: "chinto",
+      image: "/images/partners/chintomordillo.jpg",
+      alt: t("partners.chinto.alt"),
+      name: "CHINTO MORDILLO",
+      country: "",
+      subtitle: t("partners.chinto.subtitle"),
+      description: t("partners.chinto.description"),
+    },
+    {
+      id: "wkba",
+      image: "/images/partners/wkba.png",
+      alt: t("partners.wkba.alt"),
+      name: "WKBA",
+      country: "",
+      subtitle: "World Kickboxing Association",
+      description: t("partners.wkba.description"),
+    },
+  ];
+
   return (
     <section className="bg-[#050505] px-5 py-20 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl">
-        {/* Heading */}
         <div className="mb-10">
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff6500]">
             {t("eyebrow")}
@@ -22,39 +52,44 @@ export default function PartnersSection() {
           </p>
         </div>
 
-        {/* Partner card */}
-        <div className="group grid overflow-hidden border border-neutral-800 bg-neutral-900/20 transition-colors duration-300 hover:border-neutral-700 md:grid-cols-[300px_1fr]">
-          {/* Logo */}
-          <div className="flex aspect-square items-center justify-center overflow-hidden bg-neutral-900 p-5 md:aspect-auto">
-            <Image
-              src="/images/partners/aemma.jpg"
-              alt={t("partnerLogoAlt")}
-              width={437}
-              height={437}
-              className="h-full w-full object-contain transition-transform duration-500 md:group-hover:scale-105"
-            />
-          </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {partners.map((partner) => (
+            <article
+              key={partner.id}
+              className="group flex flex-col overflow-hidden border border-neutral-800 bg-neutral-900/20 transition-colors duration-300 hover:border-neutral-700"
+            >
+              <div className="flex h-56 items-center justify-center overflow-hidden bg-neutral-900 p-8">
+                <Image
+                  src={partner.image}
+                  alt={partner.alt}
+                  width={437}
+                  height={437}
+                  className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
 
-          {/* Content */}
-          <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14">
-            <span className="mb-5 w-fit border border-[#ff6500]/40 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-[#ff6500]">
-              {t("partnerLabel")}
-            </span>
+              <div className="flex flex-1 flex-col p-6">
+                <span className="mb-5 w-fit border border-[#ff6500]/40 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-[#ff6500]">
+                  {t("partnerLabel")}
+                </span>
 
-            <h3 className="text-2xl font-black uppercase text-white sm:text-3xl">
-              AEMMA <span className="text-[#ff6500]">– ESPAÑA</span>
-            </h3>
+                <h3 className="text-xl font-black uppercase text-white">
+                  {partner.name}{" "}
+                  <span className="text-[#ff6500]">{partner.country}</span>
+                </h3>
 
-            <p className="mt-3 text-sm font-medium text-neutral-400">
-              Asociación Española de MMA
-            </p>
+                <p className="mt-3 text-sm font-medium text-neutral-400">
+                  {partner.subtitle}
+                </p>
 
-            <div className="my-6 h-px w-16 bg-[#ff6500]" />
+                <div className="my-5 h-px w-12 bg-[#ff6500]" />
 
-            <p className="max-w-lg text-sm leading-7 text-neutral-400 sm:text-base">
-              {t("partnerDescription")}
-            </p>
-          </div>
+                <p className="text-sm leading-7 text-neutral-400">
+                  {partner.description}
+                </p>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
