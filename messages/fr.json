@@ -438,5 +438,46 @@
     "closingTitle": "Discipline. Force. Respect. Détermination.",
     "closingDescription": "Toute candidature représente une première étape vers l'intégration au sein de notre club. La validation finale appartient à l'équipe de MMA Los Leones.",
     "copyright": "© {year} MMA Los Leones. Tous droits réservés."
+  },
+  "Payment": {
+  "return": {
+    "eyebrow": "PAIEMENT",
+    "title": "Vérification de votre paiement",
+    "description": "Nous vérifions le statut de votre transaction. Veuillez patienter.",
+    "loading": "Vérification en cours...",
+    "successTitle": "PAIEMENT CONFIRMÉ",
+    "successDescription": "Votre paiement a été confirmé. Votre candidature a bien été enregistrée.",
+    "pendingTitle": "PAIEMENT EN COURS",
+    "pendingDescription": "Votre transaction n'est pas encore confirmée. Veuillez patienter quelques instants.",
+    "failedTitle": "PAIEMENT NON CONFIRMÉ",
+    "failedDescription": "Nous n'avons pas pu confirmer votre paiement.",
+    "retry": "VÉRIFIER À NOUVEAU",
+    "home": "RETOUR À L'ACCUEIL",
+    "contact": "CONTACTER LE CLUB"
+  },
+  "confirmation": {
+    "eyebrow": "CANDIDATURE",
+    "title": "Votre candidature est enregistrée",
+    "description": "Votre paiement a été confirmé. L'équipe de MMA Los Leones va maintenant étudier votre candidature.",
+    "processing": "Délai de traitement : 1 à 7 jours.",
+    "home": "RETOUR À L'ACCUEIL"
+  },
+  "cancel": {
+    "eyebrow": "PAIEMENT",
+    "title": "Paiement interrompu",
+    "description": "La transaction a été annulée. Aucun paiement confirmé n'a été enregistré pour cette tentative.",
+    "retry": "REPRENDRE MA CANDIDATURE",
+    "home": "RETOUR À L'ACCUEIL"
+  },
+  "errors": {
+    "invalidReference": "Référence de candidature invalide.",
+    "notFound": "Aucune information de paiement trouvée.",
+    "server": "Impossible de vérifier le paiement pour le moment. Veuillez réessayer."
+  }
+},
+  "404": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "home": "RETOUR À L'ACCUEIL"
   }
 }

@@ -348,27 +348,27 @@
     "gallery": "Gallery",
     "videos": "Videos"
   },
- "CurrentPartners": {
-  "eyebrow": "Our network",
-  "title": "Our partners",
-  "description": "Collaborations that contribute to the growth and recognition of MMA.",
-  "partnerLabel": "Official partner",
-  "partners": {
-    "aemma": {
-      "alt": "AEMMA España logo",
-      "description": "The Asociación Española de MMA (AEMMA) is our partner in Spain. This collaboration encourages exchanges between members of the discipline and contributes to the development of MMA."
-    },
-    "chinto": {
-      "alt": "Chinto Mordillo",
-      "subtitle": "Martial arts master and combat sports figure",
-      "description": "Chinto Mordillo is a direct partner of Los Leones MMA. This partnership reflects our commitment to developing exchanges and relationships within the combat sports community."
-    },
-    "wkba": {
-      "alt": "WKBA logo",
-      "description": "The World Kickboxing Association (WKBA) is a direct partner of Los Leones MMA. This partnership helps strengthen connections within the international combat sports community."
+  "CurrentPartners": {
+    "eyebrow": "Our network",
+    "title": "Our partners",
+    "description": "Collaborations that contribute to the growth and recognition of MMA.",
+    "partnerLabel": "Official partner",
+    "partners": {
+      "aemma": {
+        "alt": "AEMMA España logo",
+        "description": "The Asociación Española de MMA (AEMMA) is our partner in Spain. This collaboration encourages exchanges between members of the discipline and contributes to the development of MMA."
+      },
+      "chinto": {
+        "alt": "Chinto Mordillo",
+        "subtitle": "Martial arts master and combat sports figure",
+        "description": "Chinto Mordillo is a direct partner of Los Leones MMA. This partnership reflects our commitment to developing exchanges and relationships within the combat sports community."
+      },
+      "wkba": {
+        "alt": "WKBA logo",
+        "description": "The World Kickboxing Association (WKBA) is a direct partner of Los Leones MMA. This partnership helps strengthen connections within the international combat sports community."
+      }
     }
-  }
-},
+  },
   "HomePartner": {
     "eyebrow": "Our collaborations",
     "title": "Our partners",
@@ -438,5 +438,41 @@
     "closingTitle": "Discipline. Strength. Respect. Determination.",
     "closingDescription": "Every application is the first step towards joining our club. Final approval rests with the MMA Los Leones team.",
     "copyright": "© {year} MMA Los Leones. All rights reserved."
+  },
+  "Payment": {
+    "return": {
+      "eyebrow": "PAYMENT",
+      "title": "Verifying your payment",
+      "description": "We are checking your transaction status. Please wait.",
+      "loading": "Verification in progress...",
+      "successTitle": "PAYMENT CONFIRMED",
+      "successDescription": "Your payment has been confirmed. Your application has been successfully submitted.",
+      "pendingTitle": "PAYMENT PROCESSING",
+      "pendingDescription": "Your transaction has not yet been confirmed. Please wait a few moments.",
+      "failedTitle": "PAYMENT NOT CONFIRMED",
+      "failedDescription": "We were unable to confirm your payment.",
+      "retry": "CHECK AGAIN",
+      "home": "BACK TO HOME",
+      "contact": "CONTACT THE CLUB"
+    },
+    "confirmation": {
+      "eyebrow": "APPLICATION",
+      "title": "Your application has been submitted",
+      "description": "Your payment has been confirmed. The MMA Los Leones team will now review your application.",
+      "processing": "Processing time: 1 to 7 days.",
+      "home": "BACK TO HOME"
+    },
+    "cancel": {
+      "eyebrow": "PAYMENT",
+      "title": "Payment interrupted",
+      "description": "The transaction was cancelled. No confirmed payment was recorded for this attempt.",
+      "retry": "RESUME MY APPLICATION",
+      "home": "BACK TO HOME"
+    },
+    "errors": {
+      "invalidReference": "Invalid application reference.",
+      "notFound": "No payment information found.",
+      "server": "Unable to verify your payment right now. Please try again."
+    }
   }
 }
