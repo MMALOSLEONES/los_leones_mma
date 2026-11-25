@@ -321,7 +321,9 @@
       "niveau": "LEVEL",
       "competitions": "COMPETITIONS",
       "fichier": "FILE",
-      "source": "SOURCE"
+      "source": "SOURCE",
+      "poids": "WEIGHT",
+      "photo": "PHOTO"
     }
   },
   "categories": {
